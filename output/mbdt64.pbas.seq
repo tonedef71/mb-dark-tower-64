@@ -1,0 +1,1312 @@
+rem === mb darktower 64 ===
+rem a single player adaptation of the original 1981 milton bradley board game
+rem derived from the 2026 computer game "obsidian spire" from edwin nagle
+rem coded in 2026 by tonedef [https://tonedef71.itch.io/]
+!- version 0.99b1
+rem start oscillating noise on voice 3 for PRNG seed
+s=54272:pokes+14,255:pokes+13,255:pokes+20,128:pokes+24,0
+goto@l_boot_strap
+@p_sleep
+rem === delay for dl seconds ===
+ct=ti
+@l_sleep_delay
+ifti-ct<dl*50thengoto@l_sleep_delay
+return
+@p_border_flash
+poke53280,bc%:dl=0.05:gosub@p_sleep:poke53280,11
+return
+@p_sound_silence
+rem === silence ===
+s=54272:fori=stos+24:pokei,0:nexti:rem zero-out the sid
+return
+@p_music_ambient
+rem === ambient music ===
+s=54272
+pokes+5,9:pokes+6,0:rem adsr v1
+rem pokes+12,9:pokes+13,0:rem adsr v2
+pokes+24,8:rem volume
+onnigoto@l_music_ambient_1,@l_music_ambient_2,@l_music_ambient_3,@l_music_ambient_2,@l_music_ambient_4,@l_music_ambient_2,@l_music_ambient_1,@l_music_ambient_2
+goto@l_music_ambient_6
+@l_music_ambient_1
+pokes,163:pokes+1,8:rem note lo/hi v1
+goto@l_music_ambient_5
+@l_music_ambient_2
+pokes+4,0:rem close gate v1
+goto@l_music_ambient_6
+@l_music_ambient_3
+pokes,143:pokes+1,10:rem note lo/hi v1
+goto@l_music_ambient_5
+@l_music_ambient_4
+pokes,28:pokes+1,7:rem note lo/hi v1
+@l_music_ambient_5
+pokes+4,17:rem triangle+gate v1
+dl=.1:gosub@p_sleep
+@l_music_ambient_6
+ni=ni+1:ifni>8thenni=1
+return
+@p_music_valkyries
+rem === intro/victory music ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,49:pokes+1,28:dl=.3:gosub@p_sleep
+pokes,31:pokes+1,21:dl=.3:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
+pokes,31:pokes+1,21:dl=.1:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.3:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.3:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.1:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.1:gosub@p_sleep
+pokes,62:pokes+1,42:dl=.4:gosub@p_sleep
+pokes,31:pokes+1,21:dl=.3:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
+pokes,31:pokes+1,21:dl=.1:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
+pokes,134:pokes+1,35:dl=.7:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_music_1812_overture
+rem === fortress siege music ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,12:rem volume
+pokes+5,53:pokes+6,197:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,24:pokes+1,14:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+pokes,210:pokes+1,15:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,195:pokes+1,17:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,210:pokes+1,15:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,24:pokes+1,14:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,210:pokes+1,15:dl=.15:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,195:pokes+1,17:dl=.4:gosub@p_sleep:pokes,0:pokes+1,0
+dl=.085:gosub@p_sleep
+pokes,24:pokes+1,14:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+pokes,24:pokes+1,14:dl=.8:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_music_funeral_march
+rem === funeral march music (plague; retreat) ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,12:pokes+1,7:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+pokes,12:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,97:pokes+1,8:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,233:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,233:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.3:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_music_bazaar
+rem === bazaar music ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,78:pokes+1,13:dl=.5:gosub@p_sleep
+pokes,210:pokes+1,15:dl=.3:gosub@p_sleep
+pokes,209:pokes+1,18:dl=.3:gosub@p_sleep
+pokes,239:pokes+1,19:dl=.3:gosub@p_sleep
+pokes,209:pokes+1,18:dl=.3:gosub@p_sleep
+pokes,210:pokes+1,15:dl=.4:gosub@p_sleep
+pokes,209:pokes+1,18:dl=.3:gosub@p_sleep
+pokes,239:pokes+1,19:dl=.3:gosub@p_sleep
+pokes,209:pokes+1,18:dl=.55:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_sound_beep
+rem === beep sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+fori=1to2
+pokes,15:pokes+1,67:dl=.15:gosub@p_sleep
+pokes,0:pokes+1,0:rem force staccato
+nexti
+pokes+4,0:rem close gate v1
+return
+@p_sound_denied
+rem === denied sound (no/wrong key; bazaar closed; lost; etc.) ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,9:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,134:pokes+1,35:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+pokes,49:pokes+1,28:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,181:pokes+1,23:dl=.15:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,239:pokes+1,19:dl=.18:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,195:pokes+1,17:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,210:pokes+1,15:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,24:pokes+1,14:dl=.45:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,143:pokes+1,12:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0
+pokes+4,0:rem close gate v1
+return
+@p_sound_battle_charge
+rem === battle charge ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+forj=1to2
+pokes,135:pokes+1,33:dl=.1:gosub@p_sleep
+pokes,60:pokes+1,50:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+nextj
+pokes+4,0:rem close gate v1
+return
+@p_sound_enemy_loss
+rem === enemy loss sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,9:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,195:pokes+1,17:dl=.4:gosub@p_sleep
+pokes,156:pokes+1,26:dl=.5:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_sound_player_loss
+rem === player loss sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,9:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,156:pokes+1,26:dl=.65:gosub@p_sleep
+pokes,143:pokes+1,12:dl=.65:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_sound_battle_over
+rem === battle over sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,9:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+forj=1to2
+pokes,135:pokes+1,33:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+nextj:forj=1to2
+pokes,60:pokes+1,50:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+nextj
+pokes+4,0:rem close gate v1
+return
+@p_sound_dragon_attack
+rem === dragon attack sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+forj=1to20
+pokes,15:pokes+1,67:fori=1to2:nexti
+pokes,30:pokes+1,134:fori=1to2:nexti
+nextj
+pokes+4,0:rem close gate v1
+return
+@p_sound_vanquished
+rem === vanquished sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,62:pokes+1,42:dl=.05:gosub@p_sleep
+pokes,223:pokes+1,39:dl=.05:gosub@p_sleep
+pokes,162:pokes+1,3:dl=.05:gosub@p_sleep
+pokes,134:pokes+1,35:dl=.05:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.05:gosub@p_sleep
+pokes,165:pokes+1,31:dl=.05:gosub@p_sleep
+pokes,223:pokes+1,29:dl=.05:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.05:gosub@p_sleep
+pokes,156:pokes+1,26:dl=.05:gosub@p_sleep
+pokes,30:pokes+1,25:dl=.05:gosub@p_sleep
+pokes,181:pokes+1,23:dl=.05:gosub@p_sleep
+pokes,96:pokes+1,22:dl=.05:gosub@p_sleep
+pokes,31:pokes+1,21:dl=.05:gosub@p_sleep
+pokes,239:pokes+1,19:dl=.085:gosub@p_sleep
+pokes,209:pokes+1,18:dl=.1:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_sound_frontier
+rem === frontier sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,57:pokes+1,33:dl=.05:gosub@p_sleep
+pokes,223:pokes+1,39:dl=.05:gosub@p_sleep
+forj=1to3
+pokes,57:pokes+1,53:dl=.05:gosub@p_sleep
+pokes,134:pokes+1,35:dl=.05:gosub@p_sleep
+pokes,223:pokes+1,39:dl=.05:gosub@p_sleep
+nextj
+pokes,57:pokes+1,53:dl=.085:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_sound_sanctuary
+rem === sanctuary/citadel sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+forj=1to10
+pokes,75:pokes+1,63:fori=1to10:nexti
+pokes,191:pokes+1,79:fori=1to10:nexti
+pokes,214:pokes+1,94:fori=1to10:nexti
+nextj
+forj=1to11
+pokes,75:pokes+1,63:fori=1to10:nexti
+pokes,69:pokes+1,75:fori=1to10:nexti
+pokes,121:pokes+1,100:fori=1to10:nexti
+nextj
+pokes+4,0:rem close gate v1
+return
+@p_sound_low_food
+rem === starvation sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+forj=1to3
+pokes,210:pokes+1,15:dl=.08:gosub@p_sleep
+pokes,195:pokes+1,17:dl=.15:gosub@p_sleep
+pokes,181:pokes+1,23:dl=.12:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+nextj
+pokes,49:pokes+1,28:dl=.02:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_sound_pegasus
+rem === pegasus sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,223:pokes+1,39:dl=.05:gosub@p_sleep
+pokes,62:pokes+1,42:dl=.05:gosub@p_sleep
+pokes,107:pokes+1,47:dl=.05:gosub@p_sleep
+pokes,57:pokes+1,53:dl=.05:gosub@p_sleep
+pokes,190:pokes+1,59:dl=.05:gosub@p_sleep
+pokes,15:pokes+1,67:dl=.065:gosub@p_sleep
+pokes,214:pokes+1,94:dl=.05:gosub@p_sleep
+pokes,30:pokes+1,134:dl=.05:gosub@p_sleep
+pokes,250:pokes+1,168:dl=.05:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_sound_door_creak_open
+rem === door creaking open sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+fori=0to2:pokes+5+i*7,53:pokes+6+i*7,197:nexti:rem adsr
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+forn=28to0step-1:pokes,n:pokes+1,1
+fori=1to(n+1)*2:nexti
+pokes,0:pokes+1,0:rem force staccato
+nextn
+pokes+4,0:rem close gate v1
+return
+@p_sound_door_creak_closed
+rem === door creaking closed sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+fori=0to2:pokes+5+i*7,53:pokes+6+i*7,197:nexti:rem adsr
+pokes+24,15:rem volume
+pokes+5,8:pokes+6,255:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+forn=0to28:pokes,n:pokes+1,1
+fori=1to(n+1)*2:nexti
+pokes,0:pokes+1,0:rem force staccato
+nextn
+pokes+4,0:rem close gate v1
+return
+@p_sound_footsteps
+rem === footsteps ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,9:rem volume
+pokes+5,9:pokes+6,0:rem adsr v1
+forj=1to4
+pokes+4,129:rem noise+gate v1
+pokes,80:pokes+1,3:dl=.085:gosub@p_sleep
+pokes+4,0:rem close gate v1
+dl=.09:gosub@p_sleep
+nextj
+return
+@p_sound_game_over
+rem === game over sound ===
+s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+pokes+24,15:rem volume
+pokes+5,9:pokes+6,200:rem adsr v1
+pokes+4,33:rem sawtooth+gate v1
+pokes,35:pokes+1,8:dl=.275:gosub@p_sleep
+pokes,28:pokes+1,7:dl=.275:gosub@p_sleep
+pokes,21:pokes+1,6:dl=.275:gosub@p_sleep
+pokes,14:pokes+1,5:dl=.675:gosub@p_sleep
+pokes+4,0:rem close gate v1
+return
+@p_random_range
+rem === a random number between lo and hi ===
+r=lo+int(rnd(0)*(1+hi-lo)):rem decimal value between lo and hi
+return
+@p_dice_pct
+rem === percentile roll ===
+lo=1:hi=100:gosub@p_random_range:rem decimal value between 1 and 100
+return
+@p_any_key
+rem === hit return key to continue ===
+print:printtc$"hit "h1$rn$"return"rf$tc$" to continue";
+aa$=rt$:gosub@p_select_char
+return
+@p_loc_to_idx
+rem === derive current index from current location ===
+ci=(py-1)*5+(px-1)
+return
+@p_location
+rem === current location ===
+gosub@p_loc_to_idx:vi=te(ck,ci)and128:vt=te(ck,ci)and31
+ifvt=0thenlo$="terrain"
+ifvt=1thenlo$="citadel"
+ifvt=2thenlo$="sanctuary"
+ifvt=4thenlo$="bazaar"
+ifvt=8thenlo$="tomb"
+ifvt=16thenlo$="ruin"
+return
+@p_print_pressed_key
+rem === display key pressed ===
+printwh$">"h1$a$wh$"<":dl=0.66:gosub@p_sleep
+return
+@p_select_char
+rem === select a char option ===
+poke198,0:rem empty the keyboard buffer
+@l_select_char
+geta$:ifa$=""thengosub@p_music_ambient:goto@l_select_char
+i=0:ln%=len(aa$)
+@l_select_char_check
+ab$=mid$(aa$,i+1,1):ifab$<>a$andi<ln%theni=i+1:goto@l_select_char_check
+ifi<ln%andasc(a$)>32thengosub@p_print_pressed_key
+ifi<ln%thengoto@l_select_char_return
+goto@l_select_char
+@l_select_char_return
+return
+@p_skip_event
+sk%=0:ifck=hkandox=1andoy=1thensk%=-1:rem skip events on this turn
+return
+@p_key_total
+tk=ky(1)+ky(2)+ky(3)
+return
+@p_key_name
+rem === format a key name ===
+ifki%=0thenkt$=br$+"brass key"
+ifki%=1thenkt$=gl$+"silver key"
+ifki%=2thenkt$=yw$+"gold key"
+return
+@p_warriors_print
+rem === warrior(s) ===
+print"warrior";:ifwr%<>1thenprint"s";
+return
+@p_show_inventory
+rem === print inventory ===
+ifsu+bs+hl+sw+pg+wz=0thenc$=gy$+"(none)":goto@l_show_inventory_return
+c$=""
+ifpg=1thenc$=c$+h1$+rn$+"p"+rf$+wh$+"egasus "
+ifwz=1thenc$=c$+gy$+"wi"+h1$+rn$+"z"+rf$+gy$+"ard "
+ifsu=1thenc$=c$+vi$+"scout "
+ifbs=1thenc$=c$+bl$+"beast "
+ifhl=1thenc$=c$+bd$+"healer "
+ifsw=1thenc$=c$+og$+"sword"
+print:printc$tc$
+@l_show_inventory_return
+return
+@p_score
+rem === compute final score ===
+iffb=0thengoto@l_print_score
+a=(ew-17):a=a^2:a=int(a*0.02)+ew
+sc%=176+sc%+a-(tu%+fw):rem adjust score
+@l_print_score
+a=2:ifsgn(sc%)<0thena=a-1:rem handle a negative score
+printh3$mid$(str$(sc%),a)tc$;
+return
+@p_is_army_low
+rem === is army low? ===
+lw%=(4>wr):rem set lw% flag if less than four warriors remaining
+return
+@p_is_gold_low
+rem === is gold low? ===
+lg%=(4>gd):rem set lg% flag if less than four gold remaining
+return
+@p_eat_food
+rem === consume food ===
+fc=int(wr/15):iffc<1thenfc=1
+fd=fd-fc:iffd<0thenfd=0
+return
+@p_is_food_low
+rem === is food low? ===
+lf%=(4>fd-int(wr/15+.5)):rem set lf% flag if less than four food remaining
+return
+@p_starvation_check
+rem === starvation ===
+gosub@p_is_food_low:iflf%thengosub@p_sound_low_food:rem low food sound
+iffd>0thenreturn
+printrd$"starvation! "tc$;
+gosub@p_music_funeral_march:rem funeral march sound
+ls=1:wr=wr-ls:gosub@p_adjust_gold_carried:rem adjust gold carried
+print"lost "yw$mid$(str$(ls),2)tc$" ";:wr%=ls:gosub@p_warriors_print:print"!"
+gosub@p_army_eliminated_check
+ifwr>0thendl=2:gosub@p_sleep
+return
+@p_army_eliminated_check
+rem === army eliminated check ===
+ifwr>=1thengoto@l_army_eliminated_return
+wr=0:gm%=3:rem game over in progress
+printrd$"defeat!"tc$" thy whole army has perished"
+gosub@p_any_key:rem hit return to continue
+@l_army_eliminated_return
+return
+rem === undo last turn ===
+@p_undo_turn
+tu%=tu%-1:rem decrement turn counter
+fd=fd+fc:rem restore consumed food
+return
+@p_adjust_gold_carried
+rem === adjust carried gold ===
+mx=wr*6:ifbs=1thenmx=mx+50
+ifgd>mxthengd=mx
+return
+@p_gold
+rem === gold treasure check ===
+g=0:gosub@p_dice_pct:rem percentile roll for gold
+ifr>trthengoto@l_other_treasures:rem proceed to check for non-gold treasure
+@l_gold_amount
+lo=gl%:hi=gh%:gosub@p_random_range:g=int(r):rem compute amount of gold found
+gd=gd+g:gosub@p_adjust_gold_carried
+printh1$mid$(str$(g),2)tc$" gold gained"
+@l_other_treasures
+!- key/pegasus/sword/wizard
+rem === key treasure check ===
+gosub@p_key_here_check
+ifkpthengosub@p_key_found:goto@l_treasure_check_return:rem key is present here
+rem === non-gold treasure check ===
+iftr<1thengoto@l_treasure_check_return:rem no treasure to be found here
+iftr>50thentr=25:rem non-gold treasures should be rare
+gosub@p_dice_pct:rem re-roll percentile roll for non-gold treasure
+ifr>trthengoto@l_treasure_check_return
+tq%=0:fori=0to2:tr(i)=0:nexti
+ifpg=0thentr(tq%)=1:tq%=tq%+1
+ifsw=0thentr(tq%)=2:tq%=tq%+1
+ifwz=0thentr(tq%)=3:tq%=tq%+1
+iftq%<1thengoto@l_treasure_check_return:rem no treasures available
+lo=0:hi=tq%-1:gosub@p_random_range
+ontr(r)gosub@p_pegasus_found,@p_sword_found,@p_wizard_found
+@l_treasure_check_return
+return
+@p_key_here_check
+rem === is there a key at this location? ===
+gosub@p_key_total
+kp=0:ifck=hkortk=3thenreturn
+gosub@p_loc_to_idx:ifki(ck)=cithenkp=-1
+return
+@p_robbed
+rem === robbed ===
+sg=0:ifgd>0thensg=int(gd/4):ifsg<1thensg=1
+sl=0:ifwr>1thensl=int(wr/4):ifsl<1thensl=1
+ifsl+sg<1thengoto@l_robbed_return
+gd=gd-sg:ifgd<0thengd=0
+ifsl>0thenwr=wr-sl:gosub@p_adjust_gold_carried:rem adjust gold carried
+ifsl>0thenprinth1$mid$(str$(sl),2)tc$" ";:wr%=sl:gosub@p_warriors_print
+ifsg>0andsl>0thenprint" and ";
+ifsg>0thenprinth1$mid$(str$(sg),2)tc$" gold";
+print" lost"
+!- gosub@p_any_key:rem hit return to continue
+@l_robbed_return
+return
+@p_awarded
+rem === awarded ===
+lo=17:hi=ew:gosub@p_random_range:wg%=int(r/4):wr=wr+wg%
+printh1$mid$(str$(wg%),2)tc$" ";:wr%=wg%:gosub@p_warriors_print
+mx=wr*6:ifbs=1thenmx=mx+50
+ifgd>=mxthengoto@l_awarded_return
+lo=0:hi=(mx-gd)/4:gosub@p_random_range:gg%=int(r)
+ifgg%>0thengd=gd+gg%:print" and "h1$mid$(str$(gg%),2)tc$" gold";
+print" gained";
+@l_awarded_return
+print
+!- gosub@p_any_key:rem hit return to continue
+return
+@p_main_display
+rem === main display ===
+gosub@p_key_total:rem compute total keys acquired
+gosub@p_location:rem derive location info
+fory=3to0step-1:mp$(3-y)=""
+!- print".";:rem print progress tick
+forx=0to4:ci=y*5+x
+vi=te(ck,ci)and128:vt=te(ck,ci)and31:rem determine visited flag/location type
+r0$="":r1$="":ifvt<>0thenr0$=rn$:r1$=rf$:rem set rvs video or not
+ifvt<>0thenc$=gd$:ifvi<>0thenc$=gl$:rem determine color of building
+ifvt=0thenc$=gd$:ifvi<>0thenc$=lg$:rem determine color of non-building
+ifvi=0andck<>hkthenc$=c$+uk$:goto@l_main_non_building:rem uncharted territory
+ifvt=0thenc$=c$+te$:goto@l_main_non_building:rem terrain
+ifvt=1thenc$=c$+r0$+"c"+r1$:goto@l_main_non_building:rem citadel
+ifvt=2thenc$=c$+r0$+"s"+r1$:goto@l_main_non_building:rem sanctuary
+ifvt=4thenc$=c$+r0$+"b"+r1$:goto@l_main_non_building:rem bazaar
+ifvt=8thenc$=c$+r0$+"t"+r1$:goto@l_main_non_building:rem tomb
+ifvt=16thenc$=c$+r0$+"r"+r1$:rem ruin
+@l_main_non_building
+ifck=dd(0)andx+1=dd(1)andy+1=dd(2)thenc$=rd$+dr$:rem dragon
+ifx+1=pxandy+1=pythenc$=yw$+r0$+pw$+r1$+tc$:rem warrior
+mp$(3-y)=mp$(3-y)+c$
+nextx
+mp$(3-y)=mp$(3-y)+"  "
+ony+1goto@l_main_legend_4,@l_main_legend_3,@l_main_legend_2,@l_main_legend_1
+@l_main_legend_1
+mp$(3-y)=mp$(3-y)+h4$+"map legend"
+goto@l_main_loop_next
+@l_main_legend_2
+mp$(3-y)=mp$(3-y)+tc$+rn$+"b"+rf$+tc$+":bazaar    "
+mp$(3-y)=mp$(3-y)+tc$+rn$+"c"+rf$+tc$+":citadel "
+mp$(3-y)=mp$(3-y)+tc$+rn$+"r"+rf$+tc$+":ruin"
+goto@l_main_loop_next
+@l_main_legend_3
+mp$(3-y)=mp$(3-y)+tc$+rn$+"s"+rf$+tc$+":sanctuary "
+mp$(3-y)=mp$(3-y)+tc$+rn$+"t"+rf$+tc$+":tomb    "
+mp$(3-y)=mp$(3-y)+yw$+pw$+tc$+":army"
+goto@l_main_loop_next
+@l_main_legend_4
+mp$(3-y)=mp$(3-y)+lg$+te$+tc$+":terrain   "
+mp$(3-y)=mp$(3-y)+gd$+uk$+tc$+":unknown "+rd$+dr$+tc$+":dragon"
+@l_main_loop_next
+nexty
+printcs$chr$(kc(ck))rn$sp$rf$;
+c1$=rn$+chr$(kt(ck))+kn$(ck)+rf$+tc$+" ["+mid$(str$(px),2)+","
+c1$=c1$+mid$(str$(py),2)+"] "+h4$+lo$+tc$:a=40-len(c1$)
+c2$=tc$+"turn:"+mid$(str$(tu%+1),2):a=a-len(c2$)+7
+c1$=c1$+left$(sp$,a)+c2$
+printc1$;
+printchr$(kc(ck))rn$sp$rf$;
+fori=0to3:printmp$(i):nexti
+print
+print"     "rn$h1$"n"rf$tc$"orth";
+kt$="            ":rem empty key name placeholder
+ifky(1)=1thenki%=0:gosub@p_key_name:kt$=left$(kt$+"      ",13)
+print"       "kt$;
+printtc$"army:";
+gosub@p_is_army_low:iflw%thenprintrn$;
+printrl$mid$(str$(wr),2)tc$
+iflw%thenprintrf$;
+printrn$h1$"w"rf$tc$"est";
+c$="       ":iflo$<>"terrain"thenc$=" en"+h1$+rn$+"t"+rf$+tc$+"er "
+printc$rn$h1$"e"rf$tc$"ast";
+kt$="            ":rem empty key name placeholder
+ifky(2)=1thenki%=1:gosub@p_key_name:kt$=left$(kt$+"     ",13)
+print"  "kt$;
+printtc$"food:";
+gosub@p_is_food_low:iflf%thenprintrn$;
+printlg$mid$(str$(int(fd)),2)tc$
+iflf%thenprintrf$;
+print"     "rn$h1$"s"rf$tc$"outh";
+kt$="            ":rem empty key name placeholder
+ifky(3)=1thenki%=2:gosub@p_key_name:kt$=left$(kt$+"       ",13)
+print"       "kt$;
+printtc$"gold:";
+gosub@p_is_gold_low:iflg%thenprintrn$;
+printyw$mid$(str$(gd),2)tc$
+iflg%thenprintrf$;
+gosub@p_show_inventory
+return
+rem === action prompt ===
+@p_action_prompt
+na%=0:rem reset no action flag
+print:nk=ck+1:ifnk>3thennk=0:rem compute index of next kingdom
+ifck<>hkthengoto@l_action_frontier_check
+gosub@p_key_total:rem compute total keys acquired so far
+ifpy>3andtk=3thenprinth1$"north from here to storm the gate":goto@l_action_choice
+@l_action_frontier_check
+ifpx>4andky(ck)=1thenprinth1$"go east from here to enter "kn$(nk)tc$
+@l_action_choice
+a$="":printh4$"choose: "tc$;
+aa$=ba$+"3nswe"
+iflo$<>"terrain"thenaa$=aa$+"t"
+ifpg=1thenaa$=aa$+"p"
+ifwz=1thenaa$=aa$+"z"
+gosub@p_select_char:print:ax$=a$
+tr=0:rem default gold treasure percentage to zero
+gosub@p_starvation_check:rem starvation check
+ifgm%<>0thengoto@l_action_return
+ifax$<>"t"thenox=px:oy=py:goto@l_action_movement
+iflo$="tomb"orlo$="ruin"thengosub@p_tomb_ruin:goto@l_action_completed
+iflo$="bazaar"thengosub@p_bazaar:goto@l_action_return
+iflo$="sanctuary"orlo$="citadel"thengosub@p_sanctuary_citadel:goto@l_action_completed
+@l_action_movement
+ifax$="n"orax$="3"thendi$="north":gosub@p_move_north:goto@l_action_completed
+ifax$="s"thendi$="south":gosub@p_move_south:goto@l_action_completed
+ifax$="e"thendi$="east":gosub@p_move_east:goto@l_action_completed
+ifax$="w"thendi$="west":gosub@p_move_west:goto@l_action_completed
+ifax$="p"andpg=1thengosub@p_pegasus_use:goto@l_action_completed
+ifax$="z"andwz=1thengosub@p_wizard_use:goto@l_action_completed
+ifax$=ba$thengosub@p_leave_game:goto@l_action_return
+@l_action_completed
+ifna%thengoto@l_action_return
+tu%=tu%+1:rem increment turn counter
+gosub@p_eat_food:rem consume food
+@l_action_return
+return
+@p_move_back
+rem === move army back to previous location ===
+px=ox:py=oy
+return
+@p_move_north
+rem === move north ===
+ifpy<4thengosub@p_pre_move:py=py+1:gosub@p_movement:return
+gosub@p_map_edge:return
+@p_move_south
+rem === move south ===
+ifpy>1thengosub@p_pre_move:py=py-1:gosub@p_movement:return
+gosub@p_map_edge:return
+@p_move_east
+rem === move east ===
+ifpx<5thengosub@p_pre_move:px=px+1:gosub@p_movement:return
+gosub@p_map_edge:return
+@p_move_west
+rem === move west ===
+ifpx>1thengosub@p_pre_move:px=px-1:gosub@p_movement:return
+@p_map_edge
+rem === at map edges ===
+ifpy=4anddi$="north"thengosub@p_pre_move:gosub@p_fortress_travel:return
+ifpx=5anddi$="east"thengosub@p_pre_move:gosub@p_frontier_travel:return
+printyw$"at map's edge"tc$
+na%=-1:rem no action accepted
+return
+@p_pre_move
+rem === pre-movement processing ===
+gosub@p_loc_to_idx:rem compute current location index
+te(ck,ci)=te(ck,ci)or128:rem previous position is visited
+ifbz(ck)=1thenbz(ck)=0:rem re-open a closed bazaar
+return
+@p_movement
+rem === movement processing ===
+ifgm%=3thenreturn:rem game over in progress
+printtc$"heading "h3$di$tc$"... ";
+gosub@p_sound_footsteps:rem footsteps
+gosub@p_location:rem derive location info
+ifdd(0)=ckanddd(1)=pxanddd(2)=pythengoto@l_move_dragon:rem dragon blocks path
+te(ck,ci)=te(ck,ci)or128:rem set location to visited
+gosub@p_key_here_check
+ifkpandlo$="terrain"thengosub@p_brigands_encounter:return:rem brigands+key here
+gosub@p_skip_event:ifsk%thengosub@p_safe:return:rem skip events
+lo=1:hi=22:gosub@p_random_range:r=val(mid$(ew$,r,1))
+onrgosub@p_safe,@p_lost,@p_plague,@p_brigands_encounter,@p_dragon_encounter,@p_wizard_curse
+return
+@l_move_dragon
+ifsw=1thenprintrd$"dragon ";:gosub@p_dragon_vanq:return:rem dragon vanquished
+printrd$"dragon"tc$" forbids entry!"tc$;
+gosub@p_move_back:rem move army back to previous location
+return
+@p_safe
+rem === safe ===
+printlg$"safe."tc$;
+return
+@p_brigands_encounter
+rem === brigands ===
+printcs$rd$"brigands!"tc$:print
+a=int(wr/2):ifa<1thena=1
+lo=wr:hi=lo+a:gosub@p_random_range:bw=int(r)
+pw=wr
+@p_brigands_battle
+rem === combat ===
+b0$=mid$(str$(bw),2):w0$=mid$(str$(pw),2)
+gosub@p_sound_battle_charge:rem battle charge sound
+@l_brigands_combat_loop
+gosub@p_dice_pct:rem percentile roll
+rem === battle! ===
+co%=2+(r>(pw/(pw+bw))*100)
+onco%goto@l_player_lost_round,@l_player_won_round
+@l_player_lost_round
+bc%=10:gosub@p_border_flash
+pw=pw-1:rem lose a warrior
+sc%=sc%-1:rem adjust score
+goto@l_brigands_prompt
+@l_player_won_round
+bc%=14:gosub@p_border_flash
+bk=int(bw/2):bw=bw-bk+(bk<1):rem reduce enemy army by 1/2
+sc%=sc%+bk:rem adjust score
+@l_brigands_prompt
+printrl$"enemy:"h3$mid$(str$(bw),2)tc$"/"b0$;
+printbl$" you:"h3$mid$(str$(pw),2)tc$"/"w0$" ";
+onco%gosub@p_sound_player_loss,@p_sound_enemy_loss:rem player or enemy loss sound
+ifpw<=0orbw<=0thengoto@l_brigands_combat_over
+printtc$rn$h1$"f"rf$tc$"ight";
+ifpw<2thenprinth3$"!!! "tc$;
+ifpw>1thenprint" "rn$h1$"r"rf$tc$"etreat ";
+aa$="f":ifpw>1thenaa$=aa$+"r"
+gosub@p_select_char
+ifa$="r"thengoto@l_brigands_retreat
+goto@l_brigands_combat_loop:rem loop
+@l_brigands_retreat
+rem === retreat from combat ===
+print:printyw$"retreat! "tc$:print
+fl=1:wr=pw-fl:rem suffer one casualty
+gosub@p_adjust_gold_carried:rem adjust gold carried
+printh1$mid$(str$(fl),2)tc$" ";:wr%=fl:gosub@p_warriors_print
+print" perished in the fallback to"
+print"the previous location"
+gosub@p_music_funeral_march:rem retreat music
+gosub@p_army_eliminated_check
+ifwr>0thengosub@p_move_back:rem move army back to previous location
+iffb=1thenfb=0:gosub@p_rnd_key_order:rem re-randomize key code
+goto@l_brigands_return
+@l_brigands_combat_over
+rem === combat over ===
+lw=wr-pw:wr=pw:gosub@p_adjust_gold_carried:rem adjust gold carried
+print:print
+ifwr>0thenprintlg$"victory!"tc$:gosub@p_sound_battle_over
+ifbw<1thengoto@l_brigands_vanquished
+printh1$mid$(str$(lw),2)tc$" ";:wr%=lw:gosub@p_warriors_print
+print" perished in the battle"
+gosub@p_army_eliminated_check:ifwr=0thengoto@l_brigands_return
+@l_brigands_vanquished
+iffb=1thengoto@l_brigands_any_key
+gosub@p_dice_pct:rem percentile roll
+tr=50:gl%=5:gh%=20:gosub@p_gold:rem treasure check
+goto@l_brigands_return
+@l_brigands_any_key
+gosub@p_any_key:rem hit return to continue
+@l_brigands_return
+return
+@p_dragon_encounter
+rem === dragon ===
+iflo$="terrain"andpx<5andpy<4thengoto@l_dragon_encounter
+gosub@p_safe:return:rem dragon should not appear in this territory
+@l_dragon_encounter
+printrd$"dragon ";
+gosub@p_sound_dragon_attack:rem dragon encounter sound
+ifsw=1thengosub@p_dragon_vanq:return
+dd(0)=ck:dd(1)=px:dd(2)=py:rem place dragon at current location
+@dragon_blockade
+ifgd=0orwr<2thenprint"blockades!"tc$:goto@l_dragon_retreat
+@dragon_ambush
+print"ambushes!"tc$:gosub@p_robbed:rem robbed
+dg=dg+sg:dw=dw+sl:rem update dragon's stolen hoard
+!- gosub@p_loc_to_idx:te(ck,ci)=te(ck,ci)and127:rem clear visited bit
+@l_dragon_retreat
+print"army falls back to previous location"
+gosub@p_move_back:rem move army back to previous location
+return
+@p_dragon_vanq
+printlg$"vanquished!"tc$
+gosub@p_sound_vanquished:rem vanquished sound
+dd(0)=-1:dd(1)=-1:dd(2)=-1:rem reset dragon's position
+sw=0:rem relinquish the sword
+ifdg+dw=0thengoto@l_dragon_vanq_return
+print"recovered ";
+ifdg>0thengd=gd+dg:printh1$mid$(str$(dg),2)tc$" gold ";
+ifdg>0anddw>0thenprint"and ";
+ifdw>0thenwr=wr+dw:printh1$mid$(str$(dw),2)tc$" ";
+ifdw>0thenwr%=dw:gosub@p_warriors_print:print
+dg=0:dw=0:rem clear out dragon's stolen hoard
+gosub@p_any_key:rem hit return to continue
+@l_dragon_vanq_return
+return
+@p_plague
+rem === plague ===
+printvi$"plague!"tc$
+ifhl=1thengosub@p_healer:return
+gosub@p_music_funeral_march:rem plague sound
+ls=2:ifls>wrthenls=wr
+wr=wr-ls:gosub@p_adjust_gold_carried:rem adjust gold carried
+printh1$mid$(str$(ls),2)tc$" ";:wr%=ls:gosub@p_warriors_print:print" perished"
+gosub@p_army_eliminated_check
+return
+@p_healer
+rem === healer rescues ===
+printdg$"healer! "tc$;
+nw=2:wr=wr+nw
+printh1$mid$(str$(nw),2)tc$" new ";:wr%=nw:gosub@p_warriors_print
+print" join the ranks"
+!- gosub@p_any_key:rem hit return to continue
+return
+@p_lost
+rem === lost ===
+printvi$"lost! "tc$;:print
+ifsu=1thengosub@p_scout_helps:return
+gosub@p_sound_denied:rem sound denied
+fc=2:iffc>fdthenfc=fd
+iffc>0thenprinth1$mid$(str$(fc),2)tc$" food consumed while going nowhere!"
+fd=fd-fc
+gosub@p_move_back:rem move army back to previous location
+!- gosub@p_any_key:rem hit return to continue
+return
+@p_scout_helps
+rem === scout helps ===
+printdg$"scout! "tc$;
+nf=2:fd=fd+nf
+printh1$mid$(str$(nf),2)tc$" food scavenged"
+!- gosub@p_any_key:rem hit return to continue
+return
+@p_wizard_curse
+rem === wizard's curse ===
+ifgd=0orwr<2thengosub@p_safe:return
+printvi$"cursed!"tc$
+ifwz=1thengosub@p_wizard_saves:return
+gosub@p_sound_denied:rem denied sound
+gosub@p_robbed:rem robbed
+return
+@p_wizard_saves
+gosub@p_sound_vanquished:rem vanquished sound
+print"thy wizard disrupts the curse!"
+!- gosub@p_any_key:rem hit return to continue
+return
+@p_key_found
+rem === key found ===
+ifky(1)=0theni=1:c$=og$+"brass":goto@l_key_found_return
+ifky(2)=0theni=2:c$=cy$+"silver":goto@l_key_found_return
+ifky(3)=0theni=3:c$=yw$+"gold"
+@l_key_found_return
+ky(i)=1:rem set key obtained flag
+ki(ck)=-1:rem remove key from key locations list
+sc%=sc%+100:rem adjust score
+print:printtc$"*** "c$tc$" key found! ***"
+gosub@p_sound_beep:rem item found sound
+return
+@p_sword_found
+rem === dragonsword found ===
+sw=1:c$=og$+"sword"
+print:printtc$"*** "c$tc$" found! ***"
+gosub@p_sound_beep:rem item found sound
+return
+@p_pegasus_found
+rem === pegasus found ===
+pg=1:c$=wh$+"pegasus"
+print:printtc$"*** "c$tc$" found! ***"
+gosub@p_sound_pegasus:rem pegasus found sound
+return
+@p_wizard_found
+rem === wizard found ===
+wz=1:c$=gy$+"wizard"
+print:printtc$"*** "c$tc$" found! ***"
+gosub@p_sound_beep:rem item found sound
+return
+@p_pegasus_use
+rem === use pegasus ===
+gosub@p_sound_pegasus
+aa$="":c$="":fori=0to3:ifi>0thenc$=c$+" "
+a=(i=0):ifi>0thena=aor(ky(i-1)<>0)
+ifathena$=left$(kn$(i),1):aa$=aa$+a$
+ifathenc$=c$+rn$+h1$+a$+rf$+tc$+right$(kn$(i),len(kn$(i))-1)
+nexti:rem determine which kingdoms allowed for passage
+printc$
+printh3$"fly to which kingdom?"tc$" ("rn$h1$ba$rf$tc$" to exit) ";
+aa$=ba$+aa$:gosub@p_select_char
+ifa$=ba$thenna%=-1:return
+fori=2tolen(aa$):ifmid$(aa$,i,1)=a$thena=i-2
+nexti
+bl%(0)=0:bl%(1)=3:bl%(2)=7:bl%(3)=10:bl%(4)=13:rem indices of buildings
+bl%(5)=17:aa$="":c$=""
+fori=0to5:ifi>0thenc$=c$+" "
+vt=te(a,bl%(i))and31
+ifvt=0andi<>5thena$="entry"
+ifvt=1thena$="citadel"
+ifvt=2thena$="sanctuary"
+ifvt=4thena$="bazaar"
+ifvt=8thena$="tomb"
+ifvt=16thena$="ruin"
+ifi=5thena$="gate"
+b$=left$(a$,1):aa$=aa$+b$:c$=c$+rn$+h1$+b$+rf$+tc$+right$(a$,len(a$)-1)
+nexti:rem determine the locations within the selected kingdom
+print:printc$
+printh3$"and to which location?"tc$" ("rn$h1$ba$rf$tc$" to exit) ";
+aa$=ba$+aa$:gosub@p_select_char
+ifa$=ba$thenna%=-1:return
+fori=2tolen(aa$):ifmid$(aa$,i,1)=a$thenb=bl%(i-2)
+nexti
+py=int(b/5):px=b-5*py:px=px+1:py=py+1:rem set location
+pg=0:rem reset pegasus found flag
+ifa<>ckthenck=a:gosub@p_frontier_enter:rem fly to kingdom/location
+return
+@p_wizard_use
+rem === use wizard ===
+printtc$"the wizard incants and then vanishes!"
+gosub@p_awarded
+wz=0:rem relinquish the wizard
+return
+@p_bazaar
+rem === bazaar ===
+ifbz(ck)=1thengoto@l_bazaar_closed
+bz(4)=0:rem bazaar entry flag
+cv=0:rem clear citadel visited flag
+hg%=75:rem initial haggle percentage
+fc=1:rem food cost
+lo=5:hi=8:gosub@p_random_range:wc=int(r):rem warrior cost
+lo=17:hi=9:gosub@p_random_range:bc=int(r):rem beast cost
+lo=17:hi=9:gosub@p_random_range:sc=int(r):rem scout cost
+lo=17:hi=9:gosub@p_random_range:hc=int(r):rem healer cost
+@l_bazaar_main
+printcs$og$"bazaar"tc$;
+print"   gold:"yw$mid$(str$(gd),2)tc$;
+print" army:"rl$mid$(str$(wr),2)tc$;
+print" food:"lg$mid$(str$(fd),2)tc$:print
+ifbz(4)=0thengosub@p_music_bazaar:bz(4)=1:rem bazaar music
+ic%=0:aa$="wf"
+mw=int(gd/wc):mf=int(gd/fc)
+ifmw>0thenc$=rn$+h1$+"w"+rf$+tc$+"arrior  "+h3$
+ifmw<1thenc$=gd$+"warrior  "
+c$=c$+left$(mid$(str$(wc),2),2)
+ifmw>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mw),2)+tc$+")"
+ifmw<1thenc$=c$+"g"
+ic%=ic%or1:printc$
+ifmf>0thenc$=rn$+h1$+"f"+rf$+tc$+"ood     "+h3$
+ifmf<1thenc$=gd$+"food     "
+c$=c$+left$(mid$(str$(fc),2),2)
+ifmf>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mf),2)+tc$+")"
+ifmf<1thenc$=c$+"g"
+ic%=ic%or2:printc$
+c$=rn$+h1$+"b"+rf$+tc$+"east    "
+c$=c$+h3$+mid$(str$(bc),2)+tc$+"g"
+ifbs=0andgd>=bcthenic%=ic%or4:printc$:aa$=aa$+"b"
+c$=rn$+h1$+"s"+rf$+tc$+"cout    "
+c$=c$+h3$+mid$(str$(sc),2)+tc$+"g"
+ifsu=0andgd>=scthenic%=ic%or8:printc$:aa$=aa$+"s"
+c$=rn$+h1$+"h"+tc$+rf$+"ealer   "
+c$=c$+h3$+mid$(str$(hc),2)+tc$+"g"
+ifhl=0andgd>=hcthenic%=ic%or16:printc$:aa$=aa$+"h"
+print
+ific%>0thenprint"h"rn$h1$"a"rf$tc$"ggle ";:aa$=aa$+"a"
+print"e"h1$rn$"x"rf$tc$"it":aa$=aa$+"x"
+print:c$="":printh4$"choose: "tc$;
+gosub@p_select_char
+ifa$="w"andic%and1=1thengosub@p_buy_warriors:ifq>mwthengoto@l_haggle_annoy_merchant
+ifa$="f"andic%and2=2thengosub@p_buy_food:ifq>mfthengoto@l_haggle_annoy_merchant
+ifa$="b"andic%and4=4andbs=0andgd>=bcthengd=gd-bc:bs=1
+ifa$="s"andic%and8=8andsu=0andgd>=scthengd=gd-sc:su=1
+ifa$="h"andic%and16=16andhl=0andgd>=hcthengd=gd-hc:hl=1
+ifa$="a"andic%>0thengosub@p_haggle:ifbz(ck)=1thenreturn
+ifa$="x"thenreturn
+goto@l_bazaar_main
+@l_bazaar_closed
+printrd$"the bazaar is closed"tc$;
+na%=-1
+return
+@p_buy_warriors
+rem === buy warriors ===
+print"qty (1";:ifmw>1thenprint" - "mid$(str$(mw),2);
+print")";:inputq:ifq<1orq>mwthenreturn
+gd=gd-q*wc:wr=wr+q:return
+@p_buy_food
+rem === buy food ===
+print"qty (1";:ifmf>1thenprint" - "mid$(str$(mf),2);
+print")";:inputq:ifq<1orq>mfthenreturn
+gd=gd-q*fc:fd=fd+q:return
+@p_haggle
+rem === haggle ===
+print:print"haggling... ";:dl=1:gosub@p_sleep
+gosub@p_dice_pct
+ifr<=hg%thengoto@l_haggle_haggling
+@l_haggle_annoy_merchant
+bz(ck)=1:printrd$"closed!"tc$
+print:printgy$"thou hast annoyed the merchant"
+print"with thy stinginess"tc$;
+gosub@p_sound_denied:rem denied
+goto@l_haggle_return
+@l_haggle_haggling
+lz=0
+ifwc>=2thenwc=wc-1:lz=lz+1
+ifbc>=2thenbc=bc-1:lz=lz+1
+ifsc>=2thensc=sc-1:lz=lz+1
+ifhc>=2thenhc=hc-1:lz=lz+1
+iflz>0thenprintlg$"prices lowered!"tc$:hg%=50:dl=1:gosub@p_sleep:goto@l_haggle_return
+@l_haggle_no_deal
+printtc$"no deal.":dl=1:gosub@p_sleep
+@l_haggle_return
+return
+@p_sanctuary_citadel
+rem === sanctuary/citadel ===
+printcy$lo$tc$": ";
+gosub@p_sound_sanctuary:rem sanctuary sound
+if(lo$="citadel")and(cv<>0)thengoto@l_sanctuary_aid
+iflo$<>"citadel"thencv=0:goto@l_sanctuary_aid:rem clear citadel visited flag
+gosub@p_key_total:iftk=3thengoto@l_citadel_aid
+print:printh1$"return here with all of the keys":goto@l_sanctuary_return
+!- gosub@p_any_key:return
+@l_citadel_aid
+cv=1:rem set citadel visited flag
+ifnot(wr>=5andwr<=24)thengoto@l_sanctuary_aid:rem treat like sanctuary
+wr=wr*2:rem double the warrior count
+printlg$"renewed valor - army doubled!"tc$
+goto@l_sanctuary_return
+@l_sanctuary_aid
+ad=0:nw=0:nf=0:ng=0
+ifwr<5thenlo=5:hi=8:gosub@p_random_range:nw=int(r):wr=wr+nw:ad=1
+iffd<6thenlo=9:hi=16:gosub@p_random_range:nf=int(r):fd=fd+nf:ad=1
+ifgd<8thenlo=9:hi=16:gosub@p_random_range:ng=int(r):gd=gd+ng:ad=1
+ifnw>0thenprint"gained "h1$mid$(str$(nw),2)" "tc$;:wr%=nw:gosub@p_warriors_print:print
+ifnf>0thenprint"gained "h1$mid$(str$(nf),2)tc$" food"
+ifng>0thenprint"gained "h1$mid$(str$(ng),2)tc$" gold"
+ifad=0thenprinth1$"sufficiently provisioned"tc$
+@l_sanctuary_return
+!- gosub@p_any_key:rem hit return to continue
+return
+@p_tomb_ruin
+rem === tomb/ruin ===
+gosub@p_loc_to_idx:vi=te(ck,ci)and128:vt=te(ck,ci)and31
+printvi$;
+iflo$="tomb"thenprint"entering";:nu$="empty":tr=30:gl%=13:gh%=20:br=62.5
+iflo$="ruin"thenprint"exploring";:nu$="nothing":tr=25:gl%=13:gh%=20:br=62.5
+print" the "lo$"..."tc$
+gosub@p_sound_door_creak_open:rem creak open sound
+cv=0:rem clear citadel visited flag
+gosub@p_dice_pct:rem percentile roll for brigands or treasure
+ifr<=trthengosub@l_gold_amount:goto@l_tomb_return:rem treasure
+ifr<=brthengosub@p_brigands_encounter:return:rem brigands
+gosub@p_sound_door_creak_closed:printgy$nu$tc$
+@l_tomb_return
+!- gosub@p_any_key:rem hit return to continue
+return
+@p_frontier_travel
+rem === frontier ===
+printgy$"frontier: "tc$;
+ifck=hkthengoto@l_frontier_next_kingdom
+nk=0:rem unset needs key flag
+ifck=1andky(1)=0thennk=1:ki%=0:gosub@p_key_name:rem set needs key flag (brass)
+ifck=2andky(2)=0thennk=1:ki%=1:gosub@p_key_name:rem set needs key flag (silver)
+ifck=3andky(3)=0thennk=1:ki%=2:gosub@p_key_name:rem set needs key flag (gold)
+ifnk=1thengoto@l_frontier_missing_key
+@l_frontier_next_kingdom
+px=1:py=1:ck=ck+1:ifck>3thenck=0
+@p_frontier_enter
+ox=px:oy=py
+printtc$"entering "kn$(ck);
+bc%=13:gosub@p_border_flash
+gosub@p_sound_frontier:goto@frontier_return
+@l_frontier_missing_key
+ki%=ck:gosub@p_key_name:printrl$"missing "kt$tc$" key!"
+gosub@p_sound_denied:rem denied sound
+@frontier_return
+return
+@p_fortress_travel
+rem === the fortress! ===
+gosub@p_key_total:iftk=3thengoto@l_fortress_kingdom_check
+a=3-tk
+printh1$mid$(str$(a),2)tc$" key";:ifa<>1thenprint"s";
+print" still needed to unlock the"
+goto@l_fortress_early_exit
+@l_fortress_kingdom_check
+ifck=hkthengoto@l_fortress_banner
+printtc$"return to "h1$kn$(hk)tc$" to storm the"
+@l_fortress_early_exit
+printh1$tt$"!!!"tc$
+cv=0:rem clear citadel visited flag
+na%=-1
+!- gosub@p_any_key:rem hit return to continue
+return
+@l_fortress_banner
+rem === display foreboding banner ===
+printcs$rd$rn$sp$rf$;
+printgy$tt$
+printrd$rn$sp$rf$;
+printtc$
+print:printvi$"riddle of the keys!"tc$:print
+gosub@p_music_1812_overture:rem battle music
+print"enter order ("br$"b"tc$"/"gl$"s"tc$"/"yw$"g"tc$")...":print
+fs$(0)="":forri=1to3:printtc$"key #"h3$mid$(str$(ri),2)": "tc$;
+aa$="":forrj=1to3:fs$(1)=mid$(ko$,rj,1):fi%(0)=len(fs$(0)):fi%(1)=0
+forrk=1tofi%(0)
+ifmid$(fs$(0),rk,1)=fs$(1)thenfi%(1)=1:rk=fi%(0)
+nextrk
+iffi%(1)=0thenaa$=aa$+fs$(1)
+nextrj
+ifri<3thengosub@p_select_char
+ifri=3thena$=aa$:gosub@p_print_pressed_key
+fs$(0)=fs$(0)+a$
+nextri
+iffs$(0)=ko$thengoto@l_fortress_gate_unlocked
+@l_fortress_wrong_answer
+rem === wrong answer ===
+print:printrd$"wrong!"tc$" army forced back";
+gosub@p_sound_denied:rem denied
+return
+@l_fortress_gate_unlocked
+rem === unlocked the gate ===
+print:printlg$"unlocked!!!"tc$
+print:printh1$mid$(str$(ew),2)tc$" brigands defend "tt$
+printh1$mid$(str$(wr),2)tc$" ";:wr%=wr:gosub@p_warriors_print
+print" poised for battle"
+print:print"attack? "rn$h1$"y"rf$tc$"es or "rn$h1$"n"rf$tc$"o ";
+aa$="yn":gosub@p_select_char
+ifa$="n"thengosub@p_fortress_flee_gate:return:rem flee
+@l_fortress_final_battle
+printcs$"the final battle!":print
+fb=1:rem set final battle flag to true
+fw=wr:pw=wr:bw=ew:gosub@p_brigands_battle:rem battle
+ifwr>0andbw<1thenvc%=1:gm%=3:gosub@p_victory_final:rem victory
+return
+@p_fortress_flee_gate
+rem === flee attempt ===
+print:print"fleeing... ";:dl=1:gosub@p_sleep
+gosub@p_dice_pct:rem dice percentage
+ifr<=50thengoto@l_fortress_flee_caught
+printlg$"escaped"tc$
+gosub@p_rnd_key_order:rem re-randomize key code
+print"the gate magically re-locks";
+goto@l_fortress_flee_return
+@l_fortress_flee_caught
+printrd$"caught!"tc$:dl=1:gosub@p_sleep:goto@l_fortress_final_battle
+@l_fortress_flee_return
+return
+@p_victory_final
+rem === victory screen ===
+printcs$yw$;
+printrn$sp$rf$;
+printrn$"            *** victory! ***            "rf$;
+printrn$"                                        "rf$;
+printrn$" thou hast taken over the fortress...   "rf$;
+printrn$"                                        "rf$;
+printrn$" and now the scepter is finally thine!  "rf$;
+printrn$sp$rf$
+gosub@p_music_valkyries:rem victory music
+gosub@p_any_key:rem hit return to continue
+return
+@p_leave_game
+rem === leave game ===
+print"exit the game now? "h1$rn$"y"rf$tc$"es or "h1$rn$"n"rf$tc$"o ";
+aa$="yn":gosub@p_select_char
+ifa$="y"thengm%=3:gosub@p_game_over
+return
+@p_game_over
+rem === game over ===
+printcs$;
+printcy$"game over"tc$;
+ifvc%=1thengoto@l_game_over_win
+gosub@p_sound_game_over:rem game over sound
+print": "rl$"thou hast lost"tc$;:goto@l_game_over_cont
+@l_game_over_win
+print": "lg$"thou hast won!"tc$;
+@l_game_over_cont
+print
+gosub@p_sound_silence:rem silence all sounds
+print:printtc$"turns:"h3$mid$(str$(tu%),2)" ";
+printtc$"score:";:gosub@p_score:printtc$
+print:print"play again? "h1$rn$"y"rf$tc$"es or "h1$rn$"n"rf$tc$"o ";
+aa$="yn":gosub@p_select_char
+gm%=2:ifa$="y"thengm%=1:return
+printcs$;tc$"thanks for playing "yw$tt$tc$"!"
+print:print"fare thee well..."
+return
+@p_seed_prng
+rem --- derive seed for prng ---
+r=ti+peek(54299)+peek(53266)+peek(56320)+peek(197)
+r=r*5+123
+ifr=0thenr=1
+r = rnd(-abs(r))
+return
+@p_rnd_key_order
+rem === randomize key code order ===
+lo=1:hi=6:gosub@p_random_range
+ko$=mid$(ky$,(int(r)-1)*3+1,3)
+return
+@l_boot_strap
+poke53280,11:poke53281,0:poke646,12
+poke657,128:rem disable case toggle
+dimmp$(3),kn$(3),fc$(1),df$(3)
+dimte(3,19),kc(3),kt(3),ki(3),kk(17),ky(3)
+dimbz(4),tb(4),ru(4),dd(2),bu(2),bl%(5),fi%(1)
+kn$(0)="arisilon":kn$(1)="brynthia":kn$(2)="durnin":kn$(3)="zenon"
+df$(0)="standard":df$(1)="harder":df$(2)="random":df$(3)="trainer"
+kc(0)=150:kc(1)=159:kc(2)=158:kc(3)=30
+kt(0)=158:kt(1)=158:kt(2)=154:kt(3)=5
+ky$="bsgbgssbgsgbgbsgsb":rem the six different key sequence combinations
+!- 1=safe,2=lost,3=plague,4=brigands,5=dragon,6=cursed
+ew$="5161234123412341234516":rem the event wheel
+wh$=chr$(5):yw$=chr$(158):cy$=chr$(159):rd$=chr$(28):rl$=chr$(150)
+og$=chr$(129):vi$=chr$(156):gd$=chr$(151):gl$=chr$(155):gy$=chr$(152)
+dg$=chr$(30):lg$=chr$(153):br$=chr$(149):bd$=chr$(31):bl$=chr$(154)
+pw$=chr$(120):dr$=chr$(92):uk$=chr$(166):te$=chr$(46)
+rt$=chr$(13):cs$=chr$(147)
+ba$=chr$(95):ua$=chr$(94):gt$=chr$(62)
+rn$=chr$(18):rf$=chr$(146):rem rvs on/off characters
+h1$=yw$:h2$=og$:h3$=wh$:h4$=cy$:tc$=gl$
+sp$="                                        ":rem 40 spaces
+tt$="dark tower":rem game title
+printcs$tc$"initializing..."
+bu(0)=2:bu(1)=4:bu(2)=8:rem initial ordering of swappable buildings
+fori=0to19:read a:fork=0to3:te(k,i)=a:ifk>0andi=0thente(k,i)=0
+nextk:nexti:rem init all kingdoms
+@l_reset_state
+rem === initialize game state ===
+ni=1:gosub@p_sound_silence:rem init sound
+ky(0)=1:fori=1to3:ky(i)=0:nexti:rem reset key flags
+fori=0to2:dd(i)=-1:nexti:rem reset dragon data
+su=0:bs=0:hl=0:pg=0:sw=0:wz=0:tu%=0:sc%=0:vc%=0
+hk=0:ck=0:tk=0:px=1:py=1:ox=px:oy=py
+cv=0:dg=0:dw=0:fb=0:gm%=0:ko$=""
+@l_title_screen
+rem === title screen ===
+tl$=tt$:l%=len(tl$):if(l%and1)=0thenl%=l%+1:tl$=tl$+" "
+t%=(len(sp$)-l%)/2
+printcs$;
+printleft$(sp$,t%+(l%-5)/2);:fori=1to5:a=iand1
+ifa=0thenprint" ";
+ifa=1thenprintog$rn$" "rf$;
+nexti:print
+printleft$(sp$,t%+(l%-5)/2)og$rn$left$(sp$,5)rf$
+fori=1to2:printleft$(sp$,t%+(l%-3)/2)og$rn$left$(sp$,3)rf$:nexti
+printleft$(sp$,t%)yw$rn$tl$rf$
+print:printtc$
+printtab(5)"the scepter has been stolen by"
+printtab(5)"the evil tyrant king!"
+print:printtab(5)"find the three magic keys and"
+printtab(5)"storm the dread "h1$tt$tc$"!"
+gosub@p_music_valkyries:rem intro music
+print:printtab(14)h4$"difficulty:":print
+aa$="":c$="":fori=0to3:a$=left$(df$(i),1):aa$=aa$+a$
+c$=rn$+h1$+a$+rf$+tc$+right$(df$(i),len(df$(i))-1)
+printtab(15)c$:nexti
+print:printtab(14)h4$"choose: "tc$;
+gosub@p_select_char
+fori=1tolen(aa$):ifmid$(aa$,i,1)=a$thendf=i-1
+nexti
+@p_seed_prng:rem seed the prng
+print:print:printgy$"preparing new game...";
+gosub@p_rnd_key_order:rem randomize gate lock's key code
+@l_set_diff
+rem === difficulty settings ===
+wr=10:fd=25:gd=30:rem common game settings
+ifdf=0thenlo=17:hi=32:gosub@p_random_range:ew=int(r)
+ifdf=1thenlo=33:hi=64:gosub@p_random_range:ew=int(r)
+ifdf=2thenlo=17:hi=64:gosub@p_random_range:ew=int(r)
+ifdf=3thenko$="gsb":ew=16:py=4:oy=py:su=1:bs=1:hl=1:sw=1:pg=1:wz=1
+ifdf=3thenfori=1to3:ky(i)=1:nexti:rem grant all keys
+@l_shuffle_kingdom_buildings
+rem === shuffle certain buildings within each kingdom ===
+fork=0to3:fori=0to2
+lo=0:hi=2:gosub@p_random_range:r=int(r)
+t=bu(i):bu(i)=bu(r):bu(r)=t:nexti:rem shuffle
+l=0:fori=0to19:a=te(k,i):if(aand14)>0thente(k,i)=bu(l):l=l+1
+nexti:nextk
+@l_place_keys
+rem === place keys ===
+fork=1to3
+j=0:fori=1to19:if0=(te(k,i)and7)thenkk(j)=i:j=j+1
+nexti:rem isolate tomb,ruins,terrain from location types
+!- shuffle the isolated territories
+lo=0:hi=17:fori=lotohi:gosub@p_random_range:r=int(r)
+t=kk(i):kk(i)=kk(r):kk(r)=t:nexti
+ki(k)=kk(0):rem select the top element
+nextk
+@l_clear_maps
+rem === clear maps ===
+fork=0to3:fori=0to19
+te(k,i)=te(k,i)and127:rem clear visited bit
+nexti:nextk
+@l_main_loop_start
+rem === main game loop ===
+!- gm% game state: 0=playing;1=restarting;2=ended;3=ending
+ifgm%=3thengosub@p_game_over
+ifgm%>0thenongm%goto@l_reset_state,@l_end
+gosub@p_main_display:rem main screen
+gosub@p_action_prompt:rem action prompt
+pokes+4,0:rem close gate v1
+goto@l_main_loop_start
+@l_end
+rem === end ===
+end
+@data
+data1,0,0,2,0,0,0,8,0,0,4,0,0,16,0,0,0,0,0,0
