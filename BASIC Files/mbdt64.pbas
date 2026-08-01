@@ -15,12 +15,12 @@ return
 @p_border_flash
 poke53280,bc%:dl=0.05:gosub@p_sleep:poke53280,11
 return
-@p_sound_silence
 rem === silence ===
+@p_sound_silence
 s=54272:fori=stos+24:pokei,0:nexti:rem zero-out the sid
 return
-@p_music_ambient
 rem === ambient music ===
+@p_music_ambient
 s=54272
 pokes+5,9:pokes+6,0:rem adsr v1
 rem pokes+12,9:pokes+13,0:rem adsr v2
@@ -44,8 +44,8 @@ dl=.1:gosub@p_sleep
 @l_music_ambient_6
 ni=ni+1:ifni>8thenni=1
 return
-@p_music_valkyries
 rem === intro/victory music ===
+@p_music_valkyries
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -68,8 +68,8 @@ pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
 pokes,134:pokes+1,35:dl=.7:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_music_1812_overture
 rem === fortress siege music ===
+@p_music_1812_overture
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,12:rem volume
 pokes+5,53:pokes+6,197:rem adsr v1
@@ -86,8 +86,8 @@ pokes,24:pokes+1,14:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
 pokes,24:pokes+1,14:dl=.8:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_music_funeral_march
 rem === funeral march music (plague; retreat) ===
+@p_music_funeral_march
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -105,8 +105,8 @@ pokes,12:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
 pokes,12:pokes+1,7:dl=.3:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_music_bazaar
 rem === bazaar music ===
+@p_music_bazaar
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -122,8 +122,8 @@ pokes,239:pokes+1,19:dl=.3:gosub@p_sleep
 pokes,209:pokes+1,18:dl=.55:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_sound_beep
 rem === beep sound ===
+@p_sound_beep
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -134,8 +134,8 @@ pokes,0:pokes+1,0:rem force staccato
 nexti
 pokes+4,0:rem close gate v1
 return
-@p_sound_denied
 rem === denied sound (no/wrong key; bazaar closed; lost; etc.) ===
+@p_sound_denied
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -150,8 +150,8 @@ pokes,24:pokes+1,14:dl=.45:gosub@p_sleep:pokes,0:pokes+1,0
 pokes,143:pokes+1,12:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0
 pokes+4,0:rem close gate v1
 return
-@p_sound_battle_charge
 rem === battle charge ===
+@p_sound_battle_charge
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -162,18 +162,18 @@ pokes,60:pokes+1,50:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
 nextj
 pokes+4,0:rem close gate v1
 return
-@p_sound_enemy_loss
 rem === enemy loss sound ===
+@p_sound_enemy_loss
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
-pokes,195:pokes+1,17:dl=.4:gosub@p_sleep
-pokes,156:pokes+1,26:dl=.5:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.4:gosub@p_sleep
+pokes,57:pokes+1,53:dl=.5:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_sound_player_loss
 rem === player loss sound ===
+@p_sound_player_loss
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -182,8 +182,8 @@ pokes,156:pokes+1,26:dl=.65:gosub@p_sleep
 pokes,143:pokes+1,12:dl=.65:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_sound_battle_over
 rem === battle over sound ===
+@p_sound_battle_over
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -195,8 +195,8 @@ pokes,60:pokes+1,50:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
 nextj
 pokes+4,0:rem close gate v1
 return
-@p_sound_dragon_attack
 rem === dragon attack sound ===
+@p_sound_dragon_attack
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -207,8 +207,8 @@ pokes,30:pokes+1,134:fori=1to2:nexti
 nextj
 pokes+4,0:rem close gate v1
 return
-@p_sound_vanquished
 rem === vanquished sound ===
+@p_sound_vanquished
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -230,8 +230,8 @@ pokes,239:pokes+1,19:dl=.085:gosub@p_sleep
 pokes,209:pokes+1,18:dl=.1:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_sound_frontier
 rem === frontier sound ===
+@p_sound_frontier
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -246,8 +246,8 @@ nextj
 pokes,57:pokes+1,53:dl=.085:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_sound_sanctuary
 rem === sanctuary/citadel sound ===
+@p_sound_sanctuary
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -264,8 +264,8 @@ pokes,121:pokes+1,100:fori=1to10:nexti
 nextj
 pokes+4,0:rem close gate v1
 return
-@p_sound_low_food
 rem === starvation sound ===
+@p_sound_low_food
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -278,8 +278,8 @@ nextj
 pokes,49:pokes+1,28:dl=.02:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_sound_pegasus
 rem === pegasus sound ===
+@p_sound_pegasus
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
@@ -295,8 +295,8 @@ pokes,30:pokes+1,134:dl=.05:gosub@p_sleep
 pokes,250:pokes+1,168:dl=.05:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_sound_door_creak_open
 rem === door creaking open sound ===
+@p_sound_door_creak_open
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 fori=0to2:pokes+5+i*7,53:pokes+6+i*7,197:nexti:rem adsr
 pokes+24,15:rem volume
@@ -308,8 +308,8 @@ pokes,0:pokes+1,0:rem force staccato
 nextn
 pokes+4,0:rem close gate v1
 return
-@p_sound_door_creak_closed
 rem === door creaking closed sound ===
+@p_sound_door_creak_closed
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 fori=0to2:pokes+5+i*7,53:pokes+6+i*7,197:nexti:rem adsr
 pokes+24,15:rem volume
@@ -321,8 +321,8 @@ pokes,0:pokes+1,0:rem force staccato
 nextn
 pokes+4,0:rem close gate v1
 return
-@p_sound_footsteps
 rem === footsteps ===
+@p_sound_footsteps
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,9:rem volume
 pokes+5,9:pokes+6,0:rem adsr v1
@@ -333,8 +333,8 @@ pokes+4,0:rem close gate v1
 dl=.09:gosub@p_sleep
 nextj
 return
-@p_sound_game_over
 rem === game over sound ===
+@p_sound_game_over
 s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
 pokes+24,15:rem volume
 pokes+5,9:pokes+6,200:rem adsr v1
@@ -345,25 +345,25 @@ pokes,21:pokes+1,6:dl=.275:gosub@p_sleep
 pokes,14:pokes+1,5:dl=.675:gosub@p_sleep
 pokes+4,0:rem close gate v1
 return
-@p_random_range
 rem === a random number between lo and hi ===
+@p_random_range
 r=lo+int(rnd(0)*(1+hi-lo)):rem decimal value between lo and hi
 return
-@p_dice_pct
 rem === percentile roll ===
+@p_dice_pct
 lo=1:hi=100:gosub@p_random_range:rem decimal value between 1 and 100
 return
-@p_any_key
 rem === hit return key to continue ===
+@p_any_key
 print:printtc$"hit "h1$rn$"return"rf$tc$" to continue";
 aa$=rt$:gosub@p_select_char
 return
-@p_loc_to_idx
 rem === derive current index from current location ===
+@p_loc_to_idx
 ci=(py-1)*5+(px-1)
 return
-@p_location
 rem === current location ===
+@p_location
 gosub@p_loc_to_idx:vi=te(ck,ci)and128:vt=te(ck,ci)and31
 ifvt=0thenlo$="terrain"
 ifvt=1thenlo$="citadel"
@@ -372,12 +372,12 @@ ifvt=4thenlo$="bazaar"
 ifvt=8thenlo$="tomb"
 ifvt=16thenlo$="ruin"
 return
-@p_print_pressed_key
 rem === display key pressed ===
+@p_print_pressed_key
 printwh$">"h1$a$wh$"<":dl=0.66:gosub@p_sleep
 return
-@p_select_char
 rem === select a char option ===
+@p_select_char
 poke198,0:rem empty the keyboard buffer
 @l_select_char
 geta$:ifa$=""thengosub@p_music_ambient:goto@l_select_char
@@ -389,24 +389,26 @@ ifi<ln%thengoto@l_select_char_return
 goto@l_select_char
 @l_select_char_return
 return
+rem === skip an event ===
 @p_skip_event
 sk%=0:ifck=hkandox=1andoy=1thensk%=-1:rem skip events on this turn
 return
+rem === compute key count total ===
 @p_key_total
 tk=ky(1)+ky(2)+ky(3)
 return
-@p_key_name
 rem === format a key name ===
+@p_key_name
 ifki%=0thenkt$=br$+"brass key"
 ifki%=1thenkt$=gl$+"silver key"
 ifki%=2thenkt$=yw$+"gold key"
 return
-@p_warriors_print
 rem === warrior(s) ===
+@p_warriors_print
 print"warrior";:ifwr%<>1thenprint"s";
 return
-@p_show_inventory
 rem === print inventory ===
+@p_show_inventory
 ifsu+bs+hl+sw+pg+wz=0thenc$=gy$+"(none)":goto@l_show_inventory_return
 c$=""
 ifpg=1thenc$=c$+h1$+rn$+"p"+rf$+wh$+"egasus "
@@ -418,8 +420,8 @@ ifsw=1thenc$=c$+og$+"sword"
 print:printc$tc$
 @l_show_inventory_return
 return
-@p_score
 rem === compute final score ===
+@p_score
 iffb=0thengoto@l_print_score
 a=(ew-17):a=a^2:a=int(a*0.02)+ew
 sc%=176+sc%+a-(tu%+fw):rem adjust score
@@ -427,25 +429,25 @@ sc%=176+sc%+a-(tu%+fw):rem adjust score
 a=2:ifsgn(sc%)<0thena=a-1:rem handle a negative score
 printh3$mid$(str$(sc%),a)tc$;
 return
+rem === is army running low? ===
 @p_is_army_low
-rem === is army low? ===
 lw%=(4>wr):rem set lw% flag if less than four warriors remaining
 return
+rem === is gold running low? ===
 @p_is_gold_low
-rem === is gold low? ===
 lg%=(4>gd):rem set lg% flag if less than four gold remaining
 return
-@p_eat_food
 rem === consume food ===
+@p_eat_food
 fc=int(wr/15):iffc<1thenfc=1
 fd=fd-fc:iffd<0thenfd=0
 return
-@p_is_food_low
 rem === is food low? ===
+@p_is_food_low
 lf%=(4>fd-int(wr/15+.5)):rem set lf% flag if less than four food remaining
 return
-@p_starvation_check
 rem === starvation ===
+@p_starvation_check
 gosub@p_is_food_low:iflf%thengosub@p_sound_low_food:rem low food sound
 iffd>0thenreturn
 printrd$"starvation! "tc$;
@@ -455,8 +457,8 @@ print"lost "yw$mid$(str$(ls),2)tc$" ";:wr%=ls:gosub@p_warriors_print:print"!"
 gosub@p_army_eliminated_check
 ifwr>0thendl=2:gosub@p_sleep
 return
-@p_army_eliminated_check
 rem === army eliminated check ===
+@p_army_eliminated_check
 ifwr>=1thengoto@l_army_eliminated_return
 wr=0:gm%=3:rem game over in progress
 printrd$"defeat!"tc$" thy whole army has perished"
@@ -468,13 +470,13 @@ rem === undo last turn ===
 tu%=tu%-1:rem decrement turn counter
 fd=fd+fc:rem restore consumed food
 return
+rem === adjust amount of gold being carried ===
 @p_adjust_gold_carried
-rem === adjust carried gold ===
 mx=wr*6:ifbs=1thenmx=mx+50
 ifgd>mxthengd=mx
 return
-@p_gold
 rem === gold treasure check ===
+@p_gold
 g=0:gosub@p_dice_pct:rem percentile roll for gold
 ifr>trthengoto@l_other_treasures:rem proceed to check for non-gold treasure
 @l_gold_amount
@@ -506,8 +508,8 @@ gosub@p_key_total
 kp=0:ifck=hkortk=3thenreturn
 gosub@p_loc_to_idx:ifki(ck)=cithenkp=-1
 return
-@p_robbed
 rem === robbed ===
+@p_robbed
 sg=0:ifgd>0thensg=int(gd/4):ifsg<1thensg=1
 sl=0:ifwr>1thensl=int(wr/4):ifsl<1thensl=1
 ifsl+sg<1thengoto@l_robbed_return
@@ -520,8 +522,8 @@ print" lost"
 !- gosub@p_any_key:rem hit return to continue
 @l_robbed_return
 return
-@p_awarded
 rem === awarded ===
+@p_awarded
 lo=17:hi=ew:gosub@p_random_range:wg%=int(r/4):wr=wr+wg%
 printh1$mid$(str$(wg%),2)tc$" ";:wr%=wg%:gosub@p_warriors_print
 mx=wr*6:ifbs=1thenmx=mx+50
@@ -533,8 +535,8 @@ print" gained";
 print
 !- gosub@p_any_key:rem hit return to continue
 return
-@p_main_display
 rem === main display ===
+@p_main_display
 gosub@p_key_total:rem compute total keys acquired
 gosub@p_location:rem derive location info
 fory=3to0step-1:mp$(3-y)=""
@@ -650,45 +652,46 @@ tu%=tu%+1:rem increment turn counter
 gosub@p_eat_food:rem consume food
 @l_action_return
 return
-@p_move_back
 rem === move army back to previous location ===
+@p_move_back
 px=ox:py=oy
 return
-@p_move_north
 rem === move north ===
+@p_move_north
 ifpy<4thengosub@p_pre_move:py=py+1:gosub@p_movement:return
 gosub@p_map_edge:return
-@p_move_south
 rem === move south ===
+@p_move_south
 ifpy>1thengosub@p_pre_move:py=py-1:gosub@p_movement:return
 gosub@p_map_edge:return
-@p_move_east
 rem === move east ===
+@p_move_east
 ifpx<5thengosub@p_pre_move:px=px+1:gosub@p_movement:return
 gosub@p_map_edge:return
-@p_move_west
 rem === move west ===
+@p_move_west
 ifpx>1thengosub@p_pre_move:px=px-1:gosub@p_movement:return
-@p_map_edge
 rem === at map edges ===
+@p_map_edge
 ifpy=4anddi$="north"thengosub@p_pre_move:gosub@p_fortress_travel:return
 ifpx=5anddi$="east"thengosub@p_pre_move:gosub@p_frontier_travel:return
 printyw$"at map's edge"tc$
 na%=-1:rem no action accepted
 return
-@p_pre_move
 rem === pre-movement processing ===
+@p_pre_move
 gosub@p_loc_to_idx:rem compute current location index
 te(ck,ci)=te(ck,ci)or128:rem previous position is visited
 ifbz(ck)=1thenbz(ck)=0:rem re-open a closed bazaar
 return
-@p_movement
 rem === movement processing ===
+@p_movement
 ifgm%=3thenreturn:rem game over in progress
 printtc$"heading "h3$di$tc$"... ";
 gosub@p_sound_footsteps:rem footsteps
-gosub@p_location:rem derive location info
+@l_new_location
 ifdd(0)=ckanddd(1)=pxanddd(2)=pythengoto@l_move_dragon:rem dragon blocks path
+gosub@p_location:rem derive location info
 te(ck,ci)=te(ck,ci)or128:rem set location to visited
 gosub@p_key_here_check
 ifkpandlo$="terrain"thengosub@p_brigands_encounter:return:rem brigands+key here
@@ -701,23 +704,23 @@ ifsw=1thenprintrd$"dragon ";:gosub@p_dragon_vanq:return:rem dragon vanquished
 printrd$"dragon"tc$" forbids entry!"tc$;
 gosub@p_move_back:rem move army back to previous location
 return
-@p_safe
 rem === safe ===
+@p_safe
 printlg$"safe."tc$;
 return
-@p_brigands_encounter
 rem === brigands ===
+@p_brigands_encounter
 printcs$rd$"brigands!"tc$:print
 a=int(wr/2):ifa<1thena=1
 lo=wr:hi=lo+a:gosub@p_random_range:bw=int(r)
 pw=wr
-@p_brigands_battle
 rem === combat ===
+@p_brigands_battle
 b0$=mid$(str$(bw),2):w0$=mid$(str$(pw),2)
 gosub@p_sound_battle_charge:rem battle charge sound
+rem === battle! ===
 @l_brigands_combat_loop
 gosub@p_dice_pct:rem percentile roll
-rem === battle! ===
 co%=2+(r>(pw/(pw+bw))*100)
 onco%goto@l_player_lost_round,@l_player_won_round
 @l_player_lost_round
@@ -741,8 +744,8 @@ aa$="f":ifpw>1thenaa$=aa$+"r"
 gosub@p_select_char
 ifa$="r"thengoto@l_brigands_retreat
 goto@l_brigands_combat_loop:rem loop
-@l_brigands_retreat
 rem === retreat from combat ===
+@l_brigands_retreat
 print:printyw$"retreat! "tc$:print
 fl=1:wr=pw-fl:rem suffer one casualty
 gosub@p_adjust_gold_carried:rem adjust gold carried
@@ -754,8 +757,8 @@ gosub@p_army_eliminated_check
 ifwr>0thengosub@p_move_back:rem move army back to previous location
 iffb=1thenfb=0:gosub@p_rnd_key_order:rem re-randomize key code
 goto@l_brigands_return
-@l_brigands_combat_over
 rem === combat over ===
+@l_brigands_combat_over
 lw=wr-pw:wr=pw:gosub@p_adjust_gold_carried:rem adjust gold carried
 print:print
 ifwr>0thenprintlg$"victory!"tc$:gosub@p_sound_battle_over
@@ -772,8 +775,8 @@ goto@l_brigands_return
 gosub@p_any_key:rem hit return to continue
 @l_brigands_return
 return
-@p_dragon_encounter
 rem === dragon ===
+@p_dragon_encounter
 iflo$="terrain"andpx<5andpy<4thengoto@l_dragon_encounter
 gosub@p_safe:return:rem dragon should not appear in this territory
 @l_dragon_encounter
@@ -806,8 +809,8 @@ dg=0:dw=0:rem clear out dragon's stolen hoard
 gosub@p_any_key:rem hit return to continue
 @l_dragon_vanq_return
 return
-@p_plague
 rem === plague ===
+@p_plague
 printvi$"plague!"tc$
 ifhl=1thengosub@p_healer:return
 gosub@p_music_funeral_march:rem plague sound
@@ -816,16 +819,16 @@ wr=wr-ls:gosub@p_adjust_gold_carried:rem adjust gold carried
 printh1$mid$(str$(ls),2)tc$" ";:wr%=ls:gosub@p_warriors_print:print" perished"
 gosub@p_army_eliminated_check
 return
-@p_healer
 rem === healer rescues ===
+@p_healer
 printdg$"healer! "tc$;
 nw=2:wr=wr+nw
 printh1$mid$(str$(nw),2)tc$" new ";:wr%=nw:gosub@p_warriors_print
 print" join the ranks"
 !- gosub@p_any_key:rem hit return to continue
 return
-@p_lost
 rem === lost ===
+@p_lost
 printvi$"lost! "tc$;:print
 ifsu=1thengosub@p_scout_helps:return
 gosub@p_sound_denied:rem sound denied
@@ -835,15 +838,15 @@ fd=fd-fc
 gosub@p_move_back:rem move army back to previous location
 !- gosub@p_any_key:rem hit return to continue
 return
-@p_scout_helps
 rem === scout helps ===
+@p_scout_helps
 printdg$"scout! "tc$;
 nf=2:fd=fd+nf
 printh1$mid$(str$(nf),2)tc$" food scavenged"
 !- gosub@p_any_key:rem hit return to continue
 return
-@p_wizard_curse
 rem === wizard's curse ===
+@p_wizard_curse
 ifgd=0orwr<2thengosub@p_safe:return
 printvi$"cursed!"tc$
 ifwz=1thengosub@p_wizard_saves:return
@@ -855,8 +858,8 @@ gosub@p_sound_vanquished:rem vanquished sound
 print"thy wizard disrupts the curse!"
 !- gosub@p_any_key:rem hit return to continue
 return
-@p_key_found
 rem === key found ===
+@p_key_found
 ifky(1)=0theni=1:c$=og$+"brass":goto@l_key_found_return
 ifky(2)=0theni=2:c$=cy$+"silver":goto@l_key_found_return
 ifky(3)=0theni=3:c$=yw$+"gold"
@@ -867,26 +870,26 @@ sc%=sc%+100:rem adjust score
 print:printtc$"*** "c$tc$" key found! ***"
 gosub@p_sound_beep:rem item found sound
 return
-@p_sword_found
 rem === dragonsword found ===
+@p_sword_found
 sw=1:c$=og$+"sword"
 print:printtc$"*** "c$tc$" found! ***"
 gosub@p_sound_beep:rem item found sound
 return
-@p_pegasus_found
 rem === pegasus found ===
+@p_pegasus_found
 pg=1:c$=wh$+"pegasus"
 print:printtc$"*** "c$tc$" found! ***"
 gosub@p_sound_pegasus:rem pegasus found sound
 return
-@p_wizard_found
 rem === wizard found ===
+@p_wizard_found
 wz=1:c$=gy$+"wizard"
 print:printtc$"*** "c$tc$" found! ***"
 gosub@p_sound_beep:rem item found sound
 return
-@p_pegasus_use
 rem === use pegasus ===
+@p_pegasus_use
 gosub@p_sound_pegasus
 aa$="":c$="":fori=0to3:ifi>0thenc$=c$+" "
 a=(i=0):ifi>0thena=aor(ky(i-1)<>0)
@@ -922,14 +925,14 @@ py=int(b/5):px=b-5*py:px=px+1:py=py+1:rem set location
 pg=0:rem reset pegasus found flag
 ifa<>ckthenck=a:gosub@p_frontier_enter:rem fly to kingdom/location
 return
-@p_wizard_use
 rem === use wizard ===
+@p_wizard_use
 printtc$"the wizard incants and then vanishes!"
 gosub@p_awarded
 wz=0:rem relinquish the wizard
 return
-@p_bazaar
 rem === bazaar ===
+@p_bazaar
 ifbz(ck)=1thengoto@l_bazaar_closed
 bz(4)=0:rem bazaar entry flag
 cv=0:rem clear citadel visited flag
@@ -985,18 +988,18 @@ goto@l_bazaar_main
 printrd$"the bazaar is closed"tc$;
 na%=-1
 return
-@p_buy_warriors
 rem === buy warriors ===
+@p_buy_warriors
 print"qty (1";:ifmw>1thenprint" - "mid$(str$(mw),2);
 print")";:inputq:ifq<1orq>mwthenreturn
 gd=gd-q*wc:wr=wr+q:return
-@p_buy_food
 rem === buy food ===
+@p_buy_food
 print"qty (1";:ifmf>1thenprint" - "mid$(str$(mf),2);
 print")";:inputq:ifq<1orq>mfthenreturn
 gd=gd-q*fc:fd=fd+q:return
-@p_haggle
 rem === haggle ===
+@p_haggle
 print:print"haggling... ";:dl=1:gosub@p_sleep
 gosub@p_dice_pct
 ifr<=hg%thengoto@l_haggle_haggling
@@ -1017,8 +1020,8 @@ iflz>0thenprintlg$"prices lowered!"tc$:hg%=50:dl=1:gosub@p_sleep:goto@l_haggle_r
 printtc$"no deal.":dl=1:gosub@p_sleep
 @l_haggle_return
 return
-@p_sanctuary_citadel
 rem === sanctuary/citadel ===
+@p_sanctuary_citadel
 printcy$lo$tc$": ";
 gosub@p_sound_sanctuary:rem sanctuary sound
 if(lo$="citadel")and(cv<>0)thengoto@l_sanctuary_aid
@@ -1044,8 +1047,8 @@ ifad=0thenprinth1$"sufficiently provisioned"tc$
 @l_sanctuary_return
 !- gosub@p_any_key:rem hit return to continue
 return
-@p_tomb_ruin
 rem === tomb/ruin ===
+@p_tomb_ruin
 gosub@p_loc_to_idx:vi=te(ck,ci)and128:vt=te(ck,ci)and31
 printvi$;
 iflo$="tomb"thenprint"entering";:nu$="empty":tr=30:gl%=13:gh%=20:br=62.5
@@ -1060,8 +1063,8 @@ gosub@p_sound_door_creak_closed:printgy$nu$tc$
 @l_tomb_return
 !- gosub@p_any_key:rem hit return to continue
 return
-@p_frontier_travel
 rem === frontier ===
+@p_frontier_travel
 printgy$"frontier: "tc$;
 ifck=hkthengoto@l_frontier_next_kingdom
 nk=0:rem unset needs key flag
@@ -1070,19 +1073,19 @@ ifck=2andky(2)=0thennk=1:ki%=1:gosub@p_key_name:rem set needs key flag (silver)
 ifck=3andky(3)=0thennk=1:ki%=2:gosub@p_key_name:rem set needs key flag (gold)
 ifnk=1thengoto@l_frontier_missing_key
 @l_frontier_next_kingdom
-px=1:py=1:ck=ck+1:ifck>3thenck=0
+px=1:ck=ck+1:ifck>3thenck=0
 @p_frontier_enter
 ox=px:oy=py
-printtc$"entering "kn$(ck);
+printtc$"entering "kn$(ck)"..."
 bc%=13:gosub@p_border_flash
-gosub@p_sound_frontier:goto@frontier_return
+gosub@p_sound_frontier
+goto@l_new_location
 @l_frontier_missing_key
-ki%=ck:gosub@p_key_name:printrl$"missing "kt$tc$" key!"
+ki%=ck-1:gosub@p_key_name:printrl$"missing "kt$tc$"!"
 gosub@p_sound_denied:rem denied sound
-@frontier_return
 return
-@p_fortress_travel
 rem === the fortress! ===
+@p_fortress_travel
 gosub@p_key_total:iftk=3thengoto@l_fortress_kingdom_check
 a=3-tk
 printh1$mid$(str$(a),2)tc$" key";:ifa<>1thenprint"s";
@@ -1097,8 +1100,8 @@ cv=0:rem clear citadel visited flag
 na%=-1
 !- gosub@p_any_key:rem hit return to continue
 return
-@l_fortress_banner
 rem === display foreboding banner ===
+@l_fortress_banner
 printcs$rd$rn$sp$rf$;
 printgy$tt$
 printrd$rn$sp$rf$;
@@ -1118,13 +1121,13 @@ ifri=3thena$=aa$:gosub@p_print_pressed_key
 fs$(0)=fs$(0)+a$
 nextri
 iffs$(0)=ko$thengoto@l_fortress_gate_unlocked
-@l_fortress_wrong_answer
 rem === wrong answer ===
+@l_fortress_wrong_answer
 print:printrd$"wrong!"tc$" army forced back";
 gosub@p_sound_denied:rem denied
 return
-@l_fortress_gate_unlocked
 rem === unlocked the gate ===
+@l_fortress_gate_unlocked
 print:printlg$"unlocked!!!"tc$
 print:printh1$mid$(str$(ew),2)tc$" brigands defend "tt$
 printh1$mid$(str$(wr),2)tc$" ";:wr%=wr:gosub@p_warriors_print
@@ -1138,8 +1141,8 @@ fb=1:rem set final battle flag to true
 fw=wr:pw=wr:bw=ew:gosub@p_brigands_battle:rem battle
 ifwr>0andbw<1thenvc%=1:gm%=3:gosub@p_victory_final:rem victory
 return
-@p_fortress_flee_gate
 rem === flee attempt ===
+@p_fortress_flee_gate
 print:print"fleeing... ";:dl=1:gosub@p_sleep
 gosub@p_dice_pct:rem dice percentage
 ifr<=50thengoto@l_fortress_flee_caught
@@ -1151,8 +1154,8 @@ goto@l_fortress_flee_return
 printrd$"caught!"tc$:dl=1:gosub@p_sleep:goto@l_fortress_final_battle
 @l_fortress_flee_return
 return
-@p_victory_final
 rem === victory screen ===
+@p_victory_final
 printcs$yw$;
 printrn$sp$rf$;
 printrn$"            *** victory! ***            "rf$;
@@ -1164,14 +1167,14 @@ printrn$sp$rf$
 gosub@p_music_valkyries:rem victory music
 gosub@p_any_key:rem hit return to continue
 return
-@p_leave_game
 rem === leave game ===
+@p_leave_game
 print"exit the game now? "h1$rn$"y"rf$tc$"es or "h1$rn$"n"rf$tc$"o ";
 aa$="yn":gosub@p_select_char
 ifa$="y"thengm%=3:gosub@p_game_over
 return
-@p_game_over
 rem === game over ===
+@p_game_over
 printcs$;
 printcy$"game over"tc$;
 ifvc%=1thengoto@l_game_over_win
@@ -1190,18 +1193,19 @@ gm%=2:ifa$="y"thengm%=1:return
 printcs$;tc$"thanks for playing "yw$tt$tc$"!"
 print:print"fare thee well..."
 return
+rem === derive seed for prng ===
 @p_seed_prng
-rem --- derive seed for prng ---
 r=ti+peek(54299)+peek(53266)+peek(56320)+peek(197)
 r=r*5+123
 ifr=0thenr=1
 r = rnd(-abs(r))
 return
-@p_rnd_key_order
 rem === randomize key code order ===
+@p_rnd_key_order
 lo=1:hi=6:gosub@p_random_range
 ko$=mid$(ky$,(int(r)-1)*3+1,3)
 return
+rem === boot strap ===
 @l_boot_strap
 poke53280,11:poke53281,0:poke646,12
 poke657,128:rem disable case toggle
@@ -1229,16 +1233,16 @@ printcs$tc$"initializing..."
 bu(0)=2:bu(1)=4:bu(2)=8:rem initial ordering of swappable buildings
 fori=0to19:read a:fork=0to3:te(k,i)=a:ifk>0andi=0thente(k,i)=0
 nextk:nexti:rem init all kingdoms
-@l_reset_state
 rem === initialize game state ===
+@l_reset_state
 ni=1:gosub@p_sound_silence:rem init sound
 ky(0)=1:fori=1to3:ky(i)=0:nexti:rem reset key flags
 fori=0to2:dd(i)=-1:nexti:rem reset dragon data
 su=0:bs=0:hl=0:pg=0:sw=0:wz=0:tu%=0:sc%=0:vc%=0
 hk=0:ck=0:tk=0:px=1:py=1:ox=px:oy=py
 cv=0:dg=0:dw=0:fb=0:gm%=0:ko$=""
-@l_title_screen
 rem === title screen ===
+@l_title_screen
 tl$=tt$:l%=len(tl$):if(l%and1)=0thenl%=l%+1:tl$=tl$+" "
 t%=(len(sp$)-l%)/2
 printcs$;
@@ -1255,7 +1259,7 @@ printtab(5)"the evil tyrant king!"
 print:printtab(5)"find the three magic keys and"
 printtab(5)"storm the dread "h1$tt$tc$"!"
 gosub@p_music_valkyries:rem intro music
-print:printtab(14)h4$"difficulty:":print
+print:printtab(14)h4$"play level:":print
 aa$="":c$="":fori=0to3:a$=left$(df$(i),1):aa$=aa$+a$
 c$=rn$+h1$+a$+rf$+tc$+right$(df$(i),len(df$(i))-1)
 printtab(15)c$:nexti
@@ -1266,38 +1270,38 @@ nexti
 @p_seed_prng:rem seed the prng
 print:print:printgy$"preparing new game...";
 gosub@p_rnd_key_order:rem randomize gate lock's key code
+rem === game level settings ===
 @l_set_diff
-rem === difficulty settings ===
 wr=10:fd=25:gd=30:rem common game settings
 ifdf=0thenlo=17:hi=32:gosub@p_random_range:ew=int(r)
 ifdf=1thenlo=33:hi=64:gosub@p_random_range:ew=int(r)
 ifdf=2thenlo=17:hi=64:gosub@p_random_range:ew=int(r)
 ifdf=3thenko$="gsb":ew=16:py=4:oy=py:su=1:bs=1:hl=1:sw=1:pg=1:wz=1
 ifdf=3thenfori=1to3:ky(i)=1:nexti:rem grant all keys
-@l_shuffle_kingdom_buildings
 rem === shuffle certain buildings within each kingdom ===
+@l_shuffle_kingdom_buildings
 fork=0to3:fori=0to2
 lo=0:hi=2:gosub@p_random_range:r=int(r)
 t=bu(i):bu(i)=bu(r):bu(r)=t:nexti:rem shuffle
 l=0:fori=0to19:a=te(k,i):if(aand14)>0thente(k,i)=bu(l):l=l+1
 nexti:nextk
-@l_place_keys
 rem === place keys ===
+@l_place_keys
 fork=1to3
-j=0:fori=1to19:if0=(te(k,i)and7)thenkk(j)=i:j=j+1
+j=0:fori=0to19:if0=(te(k,i)and7)thenkk(j)=i:j=j+1
 nexti:rem isolate tomb,ruins,terrain from location types
 !- shuffle the isolated territories
 lo=0:hi=17:fori=lotohi:gosub@p_random_range:r=int(r)
 t=kk(i):kk(i)=kk(r):kk(r)=t:nexti
 ki(k)=kk(0):rem select the top element
 nextk
-@l_clear_maps
 rem === clear maps ===
+@l_clear_maps
 fork=0to3:fori=0to19
 te(k,i)=te(k,i)and127:rem clear visited bit
 nexti:nextk
-@l_main_loop_start
 rem === main game loop ===
+@l_main_loop_start
 !- gm% game state: 0=playing;1=restarting;2=ended;3=ending
 ifgm%=3thengosub@p_game_over
 ifgm%>0thenongm%goto@l_reset_state,@l_end
@@ -1305,8 +1309,9 @@ gosub@p_main_display:rem main screen
 gosub@p_action_prompt:rem action prompt
 pokes+4,0:rem close gate v1
 goto@l_main_loop_start
-@l_end
 rem === end ===
+@l_end
 end
+rem === data ===
 @data
 data1,0,0,2,0,0,0,8,0,0,4,0,0,16,0,0,0,0,0,0
