@@ -20,7 +20,7 @@
     <AutoLaunchName>mb darktower 64.prg</AutoLaunchName>
     <NoSingleFileBuild>False</NoSingleFileBuild>
     <CreatedWithVersion />
-    <HasGitRepo>False</HasGitRepo>
+    <HasGitRepo>True</HasGitRepo>
     <OutputBinDir>output</OutputBinDir>
     <GitIgnoreList />
     <UsingKickAssembler>False</UsingKickAssembler>
@@ -49,7 +49,7 @@
         <PostBuildCommands />
     </BuildEvents>
     <BuildList>
-        <FileName>output\mbdt64-bas.txt.seq</FileName>
+        <FileName>output\mbdt64.pbas.seq</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>234</PaddingByte>
@@ -70,17 +70,6 @@
             <Bookmarks />
             <Topmost>True</Topmost>
             <FileOpen>True</FileOpen>
-        </SourceFile>
-        <SourceFile>
-            <Name>\output\mbdt64.bas.seq</Name>
-            <PrgName />
-            <FileType>13</FileType>
-            <IncludeInBuild>True</IncludeInBuild>
-            <Regions />
-            <Breakpoints />
-            <Bookmarks />
-            <Topmost>False</Topmost>
-            <FileOpen>False</FileOpen>
         </SourceFile>
     </SourceFiles>
 </Project>
