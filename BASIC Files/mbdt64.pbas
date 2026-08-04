@@ -5,12 +5,15 @@ rem coded in 2026 by tonedef [https://tonedef71.itch.io/]
 !- version 0.99b1
 rem start oscillating noise on voice 3 for PRNG seed
 s=54272:pokes+14,255:pokes+13,255:pokes+20,128:pokes+24,0
+ti$="000000":ct=ti
+fori=1to1000:nexti:rem about 1 second delay
+dt=50:ifti-ct>55thendt=60:rem 50 for pal; 60 for ntsc
 goto@l_boot_strap
 @p_sleep
 rem === delay for dl seconds ===
 ct=ti
 @l_sleep_delay
-ifti-ct<dl*50thengoto@l_sleep_delay
+ifti-ct<dl*dtthengoto@l_sleep_delay
 return
 @p_border_flash
 poke53280,bc%:dl=0.05:gosub@p_sleep:poke53280,11
@@ -40,74 +43,75 @@ goto@l_music_ambient_5
 pokes,28:pokes+1,7:rem note lo/hi v1
 @l_music_ambient_5
 pokes+4,17:rem triangle+gate v1
-dl=.1:gosub@p_sleep
+dl=.3:gosub@p_sleep
 @l_music_ambient_6
 ni=ni+1:ifni>8thenni=1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === intro/victory music ===
 @p_music_valkyries
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 pokes,49:pokes+1,28:dl=.3:gosub@p_sleep
 pokes,31:pokes+1,21:dl=.3:gosub@p_sleep
-pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
-pokes,31:pokes+1,21:dl=.1:gosub@p_sleep
-pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.15:gosub@p_sleep
+pokes,31:pokes+1,21:dl=.15:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.15:gosub@p_sleep
 pokes,135:pokes+1,33:dl=.3:gosub@p_sleep
 pokes,49:pokes+1,28:dl=.3:gosub@p_sleep
-pokes,135:pokes+1,33:dl=.1:gosub@p_sleep
-pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
-pokes,135:pokes+1,33:dl=.1:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.15:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.15:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.15:gosub@p_sleep
 pokes,62:pokes+1,42:dl=.4:gosub@p_sleep
 pokes,31:pokes+1,21:dl=.3:gosub@p_sleep
-pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
-pokes,31:pokes+1,21:dl=.1:gosub@p_sleep
-pokes,49:pokes+1,28:dl=.1:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.15:gosub@p_sleep
+pokes,31:pokes+1,21:dl=.15:gosub@p_sleep
+pokes,49:pokes+1,28:dl=.15:gosub@p_sleep
 pokes,134:pokes+1,35:dl=.7:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === fortress siege music ===
 @p_music_1812_overture
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,12:rem volume
-pokes+5,53:pokes+6,197:rem adsr v1
+pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
-pokes,24:pokes+1,14:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
-pokes,210:pokes+1,15:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,195:pokes+1,17:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,210:pokes+1,15:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,24:pokes+1,14:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,210:pokes+1,15:dl=.15:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,195:pokes+1,17:dl=.4:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,24:pokes+1,14:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+pokes,210:pokes+1,15:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,195:pokes+1,17:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,210:pokes+1,15:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,24:pokes+1,14:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,210:pokes+1,15:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,195:pokes+1,17:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0
 dl=.085:gosub@p_sleep
 pokes,24:pokes+1,14:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
 pokes,24:pokes+1,14:dl=.8:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === funeral march music (plague; retreat) ===
 @p_music_funeral_march
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 pokes,12:pokes+1,7:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
-pokes,12:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,12:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,12:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.4:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.4:gosub@p_sleep:pokes,0:pokes+1,0
 pokes,97:pokes+1,8:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,233:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,233:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,12:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,12:pokes+1,7:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,12:pokes+1,7:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0
-pokes,12:pokes+1,7:dl=.3:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes,233:pokes+1,7:dl=.15:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,233:pokes+1,7:dl=.4:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.4:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0
+pokes,12:pokes+1,7:dl=.4:gosub@p_sleep
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === bazaar music ===
 @p_music_bazaar
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
@@ -120,23 +124,24 @@ pokes,210:pokes+1,15:dl=.4:gosub@p_sleep
 pokes,209:pokes+1,18:dl=.3:gosub@p_sleep
 pokes,239:pokes+1,19:dl=.3:gosub@p_sleep
 pokes,209:pokes+1,18:dl=.55:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === beep sound ===
 @p_sound_beep
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
-fori=1to2
-pokes,15:pokes+1,67:dl=.15:gosub@p_sleep
+fori=1to4
+pokes,15:pokes+1,67:dl=.25:gosub@p_sleep
 pokes,0:pokes+1,0:rem force staccato
+dl=.01:gosub@p_sleep
 nexti
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === denied sound (no/wrong key; bazaar closed; lost; etc.) ===
 @p_sound_denied
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
@@ -148,68 +153,74 @@ pokes,195:pokes+1,17:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0
 pokes,210:pokes+1,15:dl=.3:gosub@p_sleep:pokes,0:pokes+1,0
 pokes,24:pokes+1,14:dl=.45:gosub@p_sleep:pokes,0:pokes+1,0
 pokes,143:pokes+1,12:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === battle charge ===
 @p_sound_battle_charge
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 forj=1to2
-pokes,135:pokes+1,33:dl=.1:gosub@p_sleep
+pokes,135:pokes+1,33:dl=.2:gosub@p_sleep
 pokes,60:pokes+1,50:dl=.5:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
 nextj
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === enemy loss sound ===
 @p_sound_enemy_loss
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 pokes,135:pokes+1,33:dl=.4:gosub@p_sleep
 pokes,57:pokes+1,53:dl=.5:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === player loss sound ===
 @p_sound_player_loss
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 pokes,156:pokes+1,26:dl=.65:gosub@p_sleep
 pokes,143:pokes+1,12:dl=.65:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === battle over sound ===
 @p_sound_battle_over
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,9:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 forj=1to2
-pokes,135:pokes+1,33:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+pokes,135:pokes+1,33:dl=.2:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+dl=.01:gosub@p_sleep
 nextj:forj=1to2
-pokes,60:pokes+1,50:dl=.1:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+pokes,60:pokes+1,50:dl=.25:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
+dl=.01:gosub@p_sleep
 nextj
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === dragon attack sound ===
 @p_sound_dragon_attack
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 forj=1to20
-pokes,15:pokes+1,67:fori=1to2:nexti
-pokes,30:pokes+1,134:fori=1to2:nexti
+pokes,15:pokes+1,67
+!- fori=1to2:nexti
+dl=0.01:gosub@p_sleep:rem alt delay when blitzed
+pokes,30:pokes+1,134
+!- fori=1to2:nexti
+dl=0.01:gosub@p_sleep:rem alt delay when blitzed
 nextj
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === vanquished sound ===
 @p_sound_vanquished
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
@@ -228,45 +239,57 @@ pokes,96:pokes+1,22:dl=.05:gosub@p_sleep
 pokes,31:pokes+1,21:dl=.05:gosub@p_sleep
 pokes,239:pokes+1,19:dl=.085:gosub@p_sleep
 pokes,209:pokes+1,18:dl=.1:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === frontier sound ===
 @p_sound_frontier
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
-pokes,57:pokes+1,33:dl=.05:gosub@p_sleep
-pokes,223:pokes+1,39:dl=.05:gosub@p_sleep
+pokes,57:pokes+1,33:dl=.08:gosub@p_sleep
+pokes,223:pokes+1,39:dl=.08:gosub@p_sleep
 forj=1to3
-pokes,57:pokes+1,53:dl=.05:gosub@p_sleep
-pokes,134:pokes+1,35:dl=.05:gosub@p_sleep
-pokes,223:pokes+1,39:dl=.05:gosub@p_sleep
+pokes,57:pokes+1,53:dl=.08:gosub@p_sleep
+pokes,134:pokes+1,35:dl=.08:gosub@p_sleep
+pokes,223:pokes+1,39:dl=.08:gosub@p_sleep
 nextj
-pokes,57:pokes+1,53:dl=.085:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes,57:pokes+1,53:dl=.1:gosub@p_sleep
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === sanctuary/citadel sound ===
 @p_sound_sanctuary
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 forj=1to10
-pokes,75:pokes+1,63:fori=1to10:nexti
-pokes,191:pokes+1,79:fori=1to10:nexti
-pokes,214:pokes+1,94:fori=1to10:nexti
+pokes,75:pokes+1,63
+!- fori=1to10:nexti
+dl=.025:gosub@p_sleep:rem alt delay when blitzed
+pokes,191:pokes+1,79
+!- fori=1to10:nexti
+dl=.025:gosub@p_sleep:rem alt delay when blitzed
+pokes,214:pokes+1,94
+!- fori=1to10:nexti
+dl=.025:gosub@p_sleep:rem alt delay when blitzed
 nextj
 forj=1to11
-pokes,75:pokes+1,63:fori=1to10:nexti
-pokes,69:pokes+1,75:fori=1to10:nexti
-pokes,121:pokes+1,100:fori=1to10:nexti
+pokes,75:pokes+1,63
+!- fori=1to10:nexti
+dl=.025:gosub@p_sleep:rem alt delay when blitzed
+pokes,69:pokes+1,75
+!- fori=1to10:nexti
+dl=.025:gosub@p_sleep:rem alt delay when blitzed
+pokes,121:pokes+1,100
+!- fori=1to10:nexti
+dl=.025:gosub@p_sleep:rem alt delay when blitzed
 nextj
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === starvation sound ===
 @p_sound_low_food
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
@@ -276,11 +299,11 @@ pokes,195:pokes+1,17:dl=.15:gosub@p_sleep
 pokes,181:pokes+1,23:dl=.12:gosub@p_sleep:pokes,0:pokes+1,0:rem force staccato
 nextj
 pokes,49:pokes+1,28:dl=.02:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === pegasus sound ===
 @p_sound_pegasus
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
@@ -293,49 +316,50 @@ pokes,15:pokes+1,67:dl=.065:gosub@p_sleep
 pokes,214:pokes+1,94:dl=.05:gosub@p_sleep
 pokes,30:pokes+1,134:dl=.05:gosub@p_sleep
 pokes,250:pokes+1,168:dl=.05:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === door creaking open sound ===
 @p_sound_door_creak_open
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 fori=0to2:pokes+5+i*7,53:pokes+6+i*7,197:nexti:rem adsr
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 forn=28to0step-1:pokes,n:pokes+1,1
-fori=1to(n+1)*2:nexti
+!- fori=1to(n+1)*2:nexti
+dl=(n+1)*.0065:gosub@p_sleep
 pokes,0:pokes+1,0:rem force staccato
 nextn
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === door creaking closed sound ===
 @p_sound_door_creak_closed
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 fori=0to2:pokes+5+i*7,53:pokes+6+i*7,197:nexti:rem adsr
 pokes+24,15:rem volume
 pokes+5,8:pokes+6,255:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
 forn=0to28:pokes,n:pokes+1,1
-fori=1to(n+1)*2:nexti
+!- fori=1to(n+1)*2:nexti
+dl=(n+1)*.0065:gosub@p_sleep
 pokes,0:pokes+1,0:rem force staccato
 nextn
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === footsteps ===
 @p_sound_footsteps
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,9:rem volume
 pokes+5,9:pokes+6,0:rem adsr v1
 forj=1to4
 pokes+4,129:rem noise+gate v1
-pokes,80:pokes+1,3:dl=.085:gosub@p_sleep
-pokes+4,0:rem close gate v1
-dl=.09:gosub@p_sleep
+pokes,80:pokes+1,3:dl=.2:gosub@p_sleep
+pokes+4,0:dl=.09:gosub@p_sleep:rem release gate v1
 nextj
 return
 rem === game over sound ===
 @p_sound_game_over
-s=54272:pokes+4,0:fori=1to10:nexti:rem release gate
+s=54272
 pokes+24,15:rem volume
 pokes+5,9:pokes+6,200:rem adsr v1
 pokes+4,33:rem sawtooth+gate v1
@@ -343,7 +367,7 @@ pokes,35:pokes+1,8:dl=.275:gosub@p_sleep
 pokes,28:pokes+1,7:dl=.275:gosub@p_sleep
 pokes,21:pokes+1,6:dl=.275:gosub@p_sleep
 pokes,14:pokes+1,5:dl=.675:gosub@p_sleep
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.1:gosub@p_sleep:rem release gate v1
 return
 rem === a random number between lo and hi ===
 @p_random_range
@@ -355,7 +379,7 @@ lo=1:hi=100:gosub@p_random_range:rem decimal value between 1 and 100
 return
 rem === hit return key to continue ===
 @p_any_key
-print:printtc$"hit "h1$rn$"return"rf$tc$" to continue";
+print:printtc$"hit "h1$rn$"return"rf$tc$" to continue"
 aa$=rt$:gosub@p_select_char
 return
 rem === derive current index from current location ===
@@ -578,6 +602,7 @@ mp$(3-y)=mp$(3-y)+lg$+te$+tc$+":terrain   "
 mp$(3-y)=mp$(3-y)+gd$+uk$+tc$+":unknown "+rd$+dr$+tc$+":dragon"
 @l_main_loop_next
 nexty
+dl=1.5:gosub@p_sleep:rem delay needed when blitzed!
 printcs$chr$(kc(ck))rn$sp$rf$;
 c1$=rn$+chr$(kt(ck))+kn$(ck)+rf$+tc$+" ["+mid$(str$(px),2)+","
 c1$=c1$+mid$(str$(py),2)+"] "+h4$+lo$+tc$:a=40-len(c1$)
@@ -701,8 +726,9 @@ onrgosub@p_safe,@p_lost,@p_plague,@p_brigands_encounter,@p_dragon_encounter,@p_w
 return
 @l_move_dragon
 ifsw=1thenprintrd$"dragon ";:gosub@p_dragon_vanq:return:rem dragon vanquished
-printrd$"dragon"tc$" forbids entry!"tc$;
+printrd$"dragon"tc$" forbids entry!"tc$
 gosub@p_move_back:rem move army back to previous location
+na%=-1:rem no action accepted
 return
 rem === safe ===
 @p_safe
@@ -762,8 +788,8 @@ rem === combat over ===
 lw=wr-pw:wr=pw:gosub@p_adjust_gold_carried:rem adjust gold carried
 print:print
 ifwr>0thenprintlg$"victory!"tc$:gosub@p_sound_battle_over
-ifbw<1thengoto@l_brigands_vanquished
-printh1$mid$(str$(lw),2)tc$" ";:wr%=lw:gosub@p_warriors_print
+iflw<1thengoto@l_brigands_vanquished
+print:printh1$mid$(str$(lw),2)tc$" ";:wr%=lw:gosub@p_warriors_print
 print" perished in the battle"
 gosub@p_army_eliminated_check:ifwr=0thengoto@l_brigands_return
 @l_brigands_vanquished
@@ -806,7 +832,7 @@ ifdg>0anddw>0thenprint"and ";
 ifdw>0thenwr=wr+dw:printh1$mid$(str$(dw),2)tc$" ";
 ifdw>0thenwr%=dw:gosub@p_warriors_print:print
 dg=0:dw=0:rem clear out dragon's stolen hoard
-gosub@p_any_key:rem hit return to continue
+!- gosub@p_any_key:rem hit return to continue
 @l_dragon_vanq_return
 return
 rem === plague ===
@@ -1087,6 +1113,7 @@ return
 rem === the fortress! ===
 @p_fortress_travel
 gosub@p_key_total:iftk=3thengoto@l_fortress_kingdom_check
+gosub@p_sound_denied:rem denied sound
 a=3-tk
 printh1$mid$(str$(a),2)tc$" key";:ifa<>1thenprint"s";
 print" still needed to unlock the"
@@ -1307,7 +1334,7 @@ ifgm%=3thengosub@p_game_over
 ifgm%>0thenongm%goto@l_reset_state,@l_end
 gosub@p_main_display:rem main screen
 gosub@p_action_prompt:rem action prompt
-pokes+4,0:rem close gate v1
+pokes+4,0:dl=.01:gosub@p_sleep:rem release gate v1
 goto@l_main_loop_start
 rem === end ===
 @l_end
