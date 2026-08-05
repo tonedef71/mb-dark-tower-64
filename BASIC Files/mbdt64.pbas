@@ -1,10 +1,13 @@
 rem === mb darktower 64 ===
-rem a single player adaptation of the original 1981 milton bradley board game
-rem derived from the 2026 computer game "obsidian spire" from edwin nagle
+rem version 1.0.0
 rem coded in 2026 by tonedef [https://tonedef71.itch.io/]
-!- version 0.99b1
-rem start oscillating noise on voice 3 for PRNG seed
+rem a single player adaptation of the 1981 milton bradley board game
+rem "dark tower"
+rem derived from the 2026 computer game "obsidian spire" from edwin nagle
+rem =======================
+rem === start oscillating noise on voice 3 for PRNG seed ===
 s=54272:pokes+14,255:pokes+13,255:pokes+20,128:pokes+24,0
+rem === pal or ntsc detection ===
 ti$="000000":ct=ti
 fori=1to1000:nexti:rem about 1 second delay
 dt=50:ifti-ct>55thendt=60:rem 50 for pal; 60 for ntsc
