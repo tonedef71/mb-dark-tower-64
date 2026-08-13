@@ -981,15 +981,15 @@ print"   gold:"yw$mid$(str$(gd),2)tc$;
 print" army:"rl$mid$(str$(wr),2)tc$;
 print" food:"lg$mid$(str$(fd),2)tc$:print
 ifbz(4)=0thengosub@p_music_bazaar:bz(4)=1:rem bazaar music
-ic%=0:aa$="wf"
+ic%=0:aa$=""
 mw=int(gd/wc):mf=int(gd/fc)
-ifmw>0thenc$=rn$+h1$+"w"+rf$+tc$+"arrior  "+h3$
+ifmw>0thenc$=rn$+h1$+"w"+rf$+tc$+"arrior  "+h3$:aa$=aa$+"w"
 ifmw<1thenc$=gd$+"warrior  "
 c$=c$+left$(mid$(str$(wc),2),2)
 ifmw>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mw),2)+tc$+")"
 ifmw<1thenc$=c$+"g"
 ic%=ic%or1:printc$
-ifmf>0thenc$=rn$+h1$+"f"+rf$+tc$+"ood     "+h3$
+ifmf>0thenc$=rn$+h1$+"f"+rf$+tc$+"ood     "+h3$:aa$=aa$+"f"
 ifmf<1thenc$=gd$+"food     "
 c$=c$+left$(mid$(str$(fc),2),2)
 ifmf>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mf),2)+tc$+")"
