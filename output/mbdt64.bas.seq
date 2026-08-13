@@ -836,15 +836,15 @@
 8360 print" army:"rl$mid$(str$(wr),2)tc$;
 8370 print" food:"lg$mid$(str$(fd),2)tc$:print
 8380 ifbz(4)=0thengosub1020:bz(4)=1:rem bazaar music
-8390 ic%=0:aa$="wf"
+8390 ic%=0:aa$=""
 8400 mw=int(gd/wc):mf=int(gd/fc)
-8410 ifmw>0thenc$=rn$+h1$+"w"+rf$+tc$+"arrior  "+h3$
+8410 ifmw>0thenc$=rn$+h1$+"w"+rf$+tc$+"arrior  "+h3$:aa$=aa$+"w"
 8420 ifmw<1thenc$=gd$+"warrior  "
 8430 c$=c$+left$(mid$(str$(wc),2),2)
 8440 ifmw>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mw),2)+tc$+")"
 8450 ifmw<1thenc$=c$+"g"
 8460 ic%=ic%or1:printc$
-8470 ifmf>0thenc$=rn$+h1$+"f"+rf$+tc$+"ood     "+h3$
+8470 ifmf>0thenc$=rn$+h1$+"f"+rf$+tc$+"ood     "+h3$:aa$=aa$+"f"
 8480 ifmf<1thenc$=gd$+"food     "
 8490 c$=c$+left$(mid$(str$(fc),2),2)
 8500 ifmf>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mf),2)+tc$+")"
