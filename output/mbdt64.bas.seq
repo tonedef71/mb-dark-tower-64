@@ -11,7 +11,7 @@
 110 ti$="000000":ct=ti
 120 fori=1to1000:nexti:rem about 1 second delay
 130 dt=50:ifti-ct>55thendt=60:rem 50 for pal; 60 for ntsc
-140 goto10560
+140 goto10640
 150 rem === delay for dl seconds ===
 160 ct=ti
 170 ifti-ct<dl*dtthengoto170
@@ -442,7 +442,7 @@
 4420 printh1$mid$(str$(g),2)tc$" gold gained"
 4430 rem === key treasure check ===
 4440 gosub4590
-4450 ifkpthengosub7560:goto4580:rem key is present here
+4450 ifkpthengosub7580:goto4580:rem key is present here
 4460 rem === non-gold treasure check ===
 4470 iftr<1thengoto4580:rem no treasure to be found here
 4480 iftr>50thentr=25:rem non-gold treasures should be rare
@@ -454,7 +454,7 @@
 4540 ifwz=0thentr(tq%)=3:tq%=tq%+1
 4550 iftq%<1thengoto4580:rem no treasures available
 4560 lo=0:hi=tq%-1:gosub3350
-4570 ontr(r)gosub7710,7660,7760
+4570 ontr(r)gosub7730,7680,7780
 4580 return
 4590 rem === is there a key at this location? ===
 4600 gosub3720
@@ -517,7 +517,7 @@
 5170 mp$(3-y)=mp$(3-y)+lg$+te$+tc$+":terrain   "
 5180 mp$(3-y)=mp$(3-y)+gd$+uk$+tc$+":unknown "+rd$+dr$+tc$+":dragon"
 5190 nexty
-5200 dl=1.5:gosub150:rem delay needed when blitzed!
+5200 dl=2:gosub150:rem delay needed when blitzed!
 5210 printcs$chr$(kc(ck))rn$sp$rf$;
 5220 c1$=rn$+chr$(kt(ck))+kn$(ck)+rf$+tc$+" ["+mid$(str$(px),2)+","
 5230 c1$=c1$+mid$(str$(py),2)+"] "+h4$+lo$+tc$:a=40-len(c1$)
@@ -572,16 +572,16 @@
 5720 gosub4140:rem starvation check
 5730 ifgm%<>0thengoto5880
 5740 ifax$<>"t"thenox=px:oy=py:goto5780
-5750 iflo$="tomb"orlo$="ruin"thengosub9220:goto5850
-5760 iflo$="bazaar"thengosub8220:goto5880
-5770 iflo$="sanctuary"orlo$="citadel"thengosub9010:goto5850
+5750 iflo$="tomb"orlo$="ruin"thengosub9300:goto5850
+5760 iflo$="bazaar"thengosub8240:goto5880
+5770 iflo$="sanctuary"orlo$="citadel"thengosub9090:goto5850
 5780 ifax$="n"orax$="3"thendi$="north":gosub5930:goto5850
 5790 ifax$="s"thendi$="south":gosub5960:goto5850
 5800 ifax$="e"thendi$="east":gosub5990:goto5850
 5810 ifax$="w"thendi$="west":gosub6020:goto5850
-5820 ifax$="p"andpg=1thengosub7810:goto5850
-5830 ifax$="z"andwz=1thengosub8170:goto5850
-5840 ifax$=ba$thengosub10240:goto5880
+5820 ifax$="p"andpg=1thengosub7830:goto5850
+5830 ifax$="z"andwz=1thengosub8190:goto5850
+5840 ifax$=ba$thengosub10320:goto5880
 5850 ifna%thengoto5880
 5860 tu%=tu%+1:rem increment turn counter
 5870 gosub4070:rem consume food
@@ -601,8 +601,8 @@
 6010 rem === move west ===
 6020 ifpx>1thengosub6100:px=px-1:gosub6150:return
 6030 rem === at map edges ===
-6040 ifpy=4anddi$="north"thengosub6100:gosub9520:return
-6050 ifpx=5anddi$="east"thengosub6100:gosub9350:return
+6040 ifpy=4anddi$="north"thengosub6100:gosub9600:return
+6050 ifpx=5anddi$="east"thengosub6100:gosub9430:return
 6060 printyw$"at map's edge"tc$
 6070 na%=-1:rem no action accepted
 6080 return
@@ -619,532 +619,540 @@
 6190 gosub3480:rem derive location info
 6200 te(ck,ci)=te(ck,ci)or128:rem set location to visited
 6210 gosub4590
-6220 ifkpandlo$="terrain"thengosub6360:return:rem brigands+key here
-6230 gosub3690:ifsk%thengosub6330:return:rem skip events
+6220 ifkpandlo$="terrain"thengosub6380:return:rem brigands+key here
+6230 gosub3690:ifsk%thengosub6350:return:rem skip events
 6240 lo=1:hi=22:gosub3350:r=val(mid$(ew$,r,1))
-6250 onrgosub6330,7320,7170,6360,6920,7460
+6250 onrgosub6350,7340,7190,6380,6940,7480
 6260 return
-6270 ifsw=1thenprintrd$"dragon ";:gosub7040:return:rem dragon vanquished
-6280 printrd$"dragon"tc$" forbids entry!"tc$
-6290 gosub5900:rem move army back to previous location
-6300 na%=-1:rem no action accepted
-6310 return
-6320 rem === safe ===
-6330 printlg$"safe."tc$;
-6340 return
-6350 rem === brigands ===
-6360 printcs$rd$"brigands!"tc$:print
-6370 a=int(wr/2):ifa<1thena=1
-6380 lo=wr:hi=lo+a:gosub3350:bw=int(r)
-6390 pw=wr
-6400 rem === combat ===
-6410 b0$=mid$(str$(bw),2):w0$=mid$(str$(pw),2)
-6420 gosub1450:rem battle charge sound
-6430 rem === battle! ===
-6440 gosub3380:rem percentile roll
-6450 co%=2+(r>(pw/(pw+bw))*100)
-6460 onco%goto6470,6510
-6470 bc%=10:gosub190
-6480 pw=pw-1:rem lose a warrior
-6490 sc%=sc%-1:rem adjust score
-6500 goto6540
-6510 bc%=14:gosub190
-6520 bk=int(bw/2):bw=bw-bk+(bk<1):rem reduce enemy army by 1/2
-6530 sc%=sc%+bk:rem adjust score
-6540 printrl$"enemy:"h3$mid$(str$(bw),2)tc$"/"b0$;
-6550 printbl$" you:"h3$mid$(str$(pw),2)tc$"/"w0$" ";
-6560 onco%gosub1650,1560:rem player or enemy loss sound
-6570 ifpw<=0orbw<=0thengoto6780
-6580 printtc$rn$h1$"f"rf$tc$"ight";
-6590 ifpw<2thenprinth3$"!!! "tc$;
-6600 ifpw>1thenprint" "rn$h1$"r"rf$tc$"etreat ";
-6610 aa$="f":ifpw>1thenaa$=aa$+"r"
-6620 gosub3600
-6630 ifa$="r"thengoto6660
-6640 goto6440:rem loop
-6650 rem === retreat from combat ===
-6660 print:printyw$"retreat! "tc$:print
-6670 fl=1:wr=pw-fl:rem suffer one casualty
-6680 gosub4340:rem adjust gold carried
-6690 printh1$mid$(str$(fl),2)tc$" ";:wr%=fl:gosub3800
-6700 print" perished in the fallback to"
-6710 print"the previous location"
-6720 gosub840:rem retreat music
-6730 gosub4240
-6740 ifwr>0thengosub5900:rem move army back to previous location
-6750 iffb=1thenfb=0:gosub10520:rem re-randomize key code
-6760 goto6900
-6770 rem === combat over ===
-6780 lw=wr-pw:wr=pw:gosub4340:rem adjust gold carried
-6790 print:print
-6800 ifwr>0thenprintlg$"victory!"tc$:gosub1740
-6810 iflw<1thengoto6850
-6820 print:printh1$mid$(str$(lw),2)tc$" ";:wr%=lw:gosub3800
-6830 print" perished in the battle"
-6840 gosub4240:ifwr=0thengoto6900
-6850 iffb=1thengoto6890
-6860 gosub3380:rem percentile roll
-6870 tr=50:gl%=5:gh%=20:gosub4380:rem treasure check
-6880 goto6900
-6890 gosub3410:rem hit return to continue
-6900 return
-6910 rem === dragon ===
-6920 iflo$="terrain"andpx<5andpy<4thengoto6940
-6930 gosub6330:return:rem dragon should not appear in this territory
-6940 printrd$"dragon ";
-6950 gosub1880:rem dragon encounter sound
-6960 ifsw=1thengosub7040:return
-6970 dd(0)=ck:dd(1)=px:dd(2)=py:rem place dragon at current location
-6980 ifgd=0orwr<2thenprint"blockades!"tc$:goto7010
-6990 print"ambushes!"tc$:gosub4650:rem robbed
-7000 dg=dg+sg:dw=dw+sl:rem update dragon's stolen hoard
-7010 print"army falls back to previous location"
-7020 gosub5900:rem move army back to previous location
-7030 return
-7040 printlg$"vanquished!"tc$
-7050 gosub2010:rem vanquished sound
-7060 dd(0)=-1:dd(1)=-1:dd(2)=-1:rem reset dragon's position
-7070 sw=0:rem relinquish the sword
-7080 ifdg+dw=0thengoto7150
-7090 print"recovered ";
-7100 ifdg>0thengd=gd+dg:printh1$mid$(str$(dg),2)tc$" gold ";
-7110 ifdg>0anddw>0thenprint"and ";
-7120 ifdw>0thenwr=wr+dw:printh1$mid$(str$(dw),2)tc$" ";
-7130 ifdw>0thenwr%=dw:gosub3800:print
-7140 dg=0:dw=0:rem clear out dragon's stolen hoard
-7150 return
-7160 rem === plague ===
-7170 printvi$"plague!"tc$
-7180 ifhl=1thengosub7260:return
-7190 gosub840:rem plague sound
-7200 ls=2:ifls>wrthenls=wr
-7210 wr=wr-ls:gosub4340:rem adjust gold carried
-7220 printh1$mid$(str$(ls),2)tc$" ";:wr%=ls:gosub3800:print" perished"
-7230 gosub4240
-7240 return
-7250 rem === healer rescues ===
-7260 printdg$"healer! "tc$;
-7270 nw=2:wr=wr+nw
-7280 printh1$mid$(str$(nw),2)tc$" new ";:wr%=nw:gosub3800
-7290 print" join the ranks"
-7300 return
-7310 rem === lost ===
-7320 printvi$"lost! "tc$;:print
-7330 ifsu=1thengosub7410:return
-7340 gosub1300:rem sound denied
-7350 fc=2:iffc>fdthenfc=fd
-7360 iffc>0thenprinth1$mid$(str$(fc),2)tc$" food consumed while going nowhere!"
-7370 fd=fd-fc
-7380 gosub5900:rem move army back to previous location
-7390 return
-7400 rem === scout helps ===
-7410 printdg$"scout! "tc$;
-7420 nf=2:fd=fd+nf
-7430 printh1$mid$(str$(nf),2)tc$" food scavenged"
-7440 return
-7450 rem === wizard's curse ===
-7460 ifgd=0orwr<2thengosub6330:return
-7470 printvi$"cursed!"tc$
-7480 ifwz=1thengosub7520:return
-7490 gosub1300:rem denied sound
-7500 gosub4650:rem robbed
-7510 return
-7520 gosub2010:rem vanquished sound
-7530 print"thy wizard disrupts the curse!"
-7540 return
-7550 rem === key found ===
-7560 ifky(1)=0theni=1:c$=og$+"brass":goto7590
-7570 ifky(2)=0theni=2:c$=cy$+"silver":goto7590
-7580 ifky(3)=0theni=3:c$=yw$+"gold"
-7590 ky(i)=1:rem set key obtained flag
-7600 ki(ck)=-1:rem remove key from key locations list
-7610 sc%=sc%+100:rem adjust score
-7620 print:printtc$"*** "c$tc$" key found! ***"
-7630 gosub1180:rem item found sound
-7640 return
-7650 rem === dragonsword found ===
-7660 sw=1:c$=og$+"sword"
-7670 print:printtc$"*** "c$tc$" found! ***"
-7680 gosub1180:rem item found sound
-7690 return
-7700 rem === pegasus found ===
-7710 pg=1:c$=wh$+"pegasus"
-7720 print:printtc$"*** "c$tc$" found! ***"
-7730 gosub2740:rem pegasus found sound
-7740 return
-7750 rem === wizard found ===
-7760 wz=1:c$=gy$+"wizard"
-7770 print:printtc$"*** "c$tc$" found! ***"
-7780 gosub1180:rem item found sound
-7790 return
-7800 rem === use pegasus ===
-7810 gosub2740
-7820 aa$="":c$="":fori=0to3:ifi>0thenc$=c$+" "
-7830 a=(i=0):ifi>0thena=aor(ky(i-1)<>0)
-7840 ifathena$=left$(kn$(i),1):aa$=aa$+a$
-7850 ifathenc$=c$+rn$+h1$+a$+rf$+tc$+right$(kn$(i),len(kn$(i))-1)
-7860 nexti:rem determine which kingdoms allowed for passage
-7870 printc$
-7880 printh3$"fly to which kingdom?"tc$" ("rn$h1$ba$rf$tc$" to exit) ";
-7890 aa$=ba$+aa$:gosub3600
-7900 ifa$=ba$thenna%=-1:return
-7910 fori=2tolen(aa$):ifmid$(aa$,i,1)=a$thena=i-2
-7920 nexti
-7930 bl%(0)=0:bl%(1)=3:bl%(2)=7:bl%(3)=10:bl%(4)=13:rem indices of buildings
-7940 bl%(5)=17:aa$="":c$=""
-7950 fori=0to5:ifi>0thenc$=c$+" "
-7960 vt=te(a,bl%(i))and31
-7970 ifvt=0andi<>5thena$="entry"
-7980 ifvt=1thena$="citadel"
-7990 ifvt=2thena$="sanctuary"
-8000 ifvt=4thena$="bazaar"
-8010 ifvt=8thena$="tomb"
-8020 ifvt=16thena$="ruin"
-8030 ifi=5thena$="gate"
-8040 b$=left$(a$,1):aa$=aa$+b$:c$=c$+rn$+h1$+b$+rf$+tc$+right$(a$,len(a$)-1)
-8050 nexti:rem determine the locations within the selected kingdom
-8060 print:printc$
-8070 printh3$"and to which location?"tc$" ("rn$h1$ba$rf$tc$" to exit) ";
-8080 aa$=ba$+aa$:gosub3600
-8090 ifa$=ba$thenna%=-1:return
-8100 fori=2tolen(aa$):ifmid$(aa$,i,1)=a$thenb=bl%(i-2)
-8110 nexti
-8120 py=int(b/5):px=b-5*py:px=px+1:py=py+1:rem set location
-8130 pg=0:rem reset pegasus found flag
-8140 ifa<>ckthenck=a:gosub9430:rem fly to kingdom/location
-8150 return
-8160 rem === use wizard ===
-8170 printtc$"the wizard incants and then vanishes!"
-8180 gosub4760
-8190 wz=0:rem relinquish the wizard
-8200 return
-8210 rem === bazaar ===
-8220 ifbz(ck)=1thengoto8720
-8230 bz(4)=0:rem bazaar entry flag
-8240 cv=0:rem clear citadel visited flag
-8250 hg%=75:rem initial haggle percentage
-8260 fc=1:rem food cost
-8270 lo=5:hi=8:gosub3350:wc=int(r):rem warrior cost
-8280 lo=17:hi=9:gosub3350:bc=int(r):rem beast cost
-8290 lo=17:hi=9:gosub3350:sc=int(r):rem scout cost
-8300 lo=17:hi=9:gosub3350:hc=int(r):rem healer cost
-8310 printcs$og$"bazaar"tc$;
-8320 print"   gold:"yw$mid$(str$(gd),2)tc$;
-8330 print" army:"rl$mid$(str$(wr),2)tc$;
-8340 print" food:"lg$mid$(str$(fd),2)tc$:print
-8350 ifbz(4)=0thengosub1020:bz(4)=1:rem bazaar music
-8360 ic%=0:aa$="wf"
-8370 mw=int(gd/wc):mf=int(gd/fc)
-8380 ifmw>0thenc$=rn$+h1$+"w"+rf$+tc$+"arrior  "+h3$
-8390 ifmw<1thenc$=gd$+"warrior  "
-8400 c$=c$+left$(mid$(str$(wc),2),2)
-8410 ifmw>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mw),2)+tc$+")"
-8420 ifmw<1thenc$=c$+"g"
-8430 ic%=ic%or1:printc$
-8440 ifmf>0thenc$=rn$+h1$+"f"+rf$+tc$+"ood     "+h3$
-8450 ifmf<1thenc$=gd$+"food     "
-8460 c$=c$+left$(mid$(str$(fc),2),2)
-8470 ifmf>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mf),2)+tc$+")"
-8480 ifmf<1thenc$=c$+"g"
-8490 ic%=ic%or2:printc$
-8500 c$=rn$+h1$+"b"+rf$+tc$+"east    "
-8510 c$=c$+h3$+mid$(str$(bc),2)+tc$+"g"
-8520 ifbs=0andgd>=bcthenic%=ic%or4:printc$:aa$=aa$+"b"
-8530 c$=rn$+h1$+"s"+rf$+tc$+"cout    "
-8540 c$=c$+h3$+mid$(str$(sc),2)+tc$+"g"
-8550 ifsu=0andgd>=scthenic%=ic%or8:printc$:aa$=aa$+"s"
-8560 c$=rn$+h1$+"h"+tc$+rf$+"ealer   "
-8570 c$=c$+h3$+mid$(str$(hc),2)+tc$+"g"
-8580 ifhl=0andgd>=hcthenic%=ic%or16:printc$:aa$=aa$+"h"
-8590 print
-8600 ific%>0thenprint"h"rn$h1$"a"rf$tc$"ggle ";:aa$=aa$+"a"
-8610 print"e"h1$rn$"x"rf$tc$"it":aa$=aa$+"x"
-8620 print:c$="":printh4$"choose: "tc$;
-8630 gosub3600
-8640 ifa$="w"andic%and1=1thengosub8760:ifq>mwthengoto8870
-8650 ifa$="f"andic%and2=2thengosub8800:ifq>mfthengoto8870
-8660 ifa$="b"andic%and4=4andbs=0andgd>=bcthengd=gd-bc:bs=1
-8670 ifa$="s"andic%and8=8andsu=0andgd>=scthengd=gd-sc:su=1
-8680 ifa$="h"andic%and16=16andhl=0andgd>=hcthengd=gd-hc:hl=1
-8690 ifa$="a"andic%>0thengosub8840:ifbz(ck)=1thenreturn
-8700 ifa$="x"thenreturn
-8710 goto8310
-8720 printrd$"the bazaar is closed"tc$;
-8730 na%=-1
-8740 return
-8750 rem === buy warriors ===
-8760 print"qty (1";:ifmw>1thenprint" - "mid$(str$(mw),2);
-8770 print")";:inputq:ifq<1orq>mwthenreturn
-8780 gd=gd-q*wc:wr=wr+q:return
-8790 rem === buy food ===
-8800 print"qty (1";:ifmf>1thenprint" - "mid$(str$(mf),2);
-8810 print")";:inputq:ifq<1orq>mfthenreturn
-8820 gd=gd-q*fc:fd=fd+q:return
-8830 rem === haggle ===
-8840 print:print"haggling... ";:dl=1:gosub150
-8850 gosub3380
-8860 ifr<=hg%thengoto8920
-8870 bz(ck)=1:printrd$"closed!"tc$
-8880 print:printgy$"thou hast annoyed the merchant"
-8890 print"with thy stinginess"tc$;
-8900 gosub1300:rem denied
-8910 goto8990
-8920 lz=0
-8930 ifwc>=2thenwc=wc-1:lz=lz+1
-8940 ifbc>=2thenbc=bc-1:lz=lz+1
-8950 ifsc>=2thensc=sc-1:lz=lz+1
-8960 ifhc>=2thenhc=hc-1:lz=lz+1
-8970 iflz>0thenprintlg$"prices lowered!"tc$:hg%=50:dl=1:gosub150:goto8990
-8980 printtc$"no deal.":dl=1:gosub150
-8990 return
-9000 rem === sanctuary/citadel ===
-9010 printcy$lo$tc$": ";
-9020 gosub2380:rem sanctuary sound
-9030 if(lo$="citadel")and(cv<>0)thengoto9120
-9040 iflo$<>"citadel"thencv=0:goto9120:rem clear citadel visited flag
-9050 gosub3720:iftk=3thengoto9070
-9060 print:printh1$"return here with all of the keys":goto9200
-9070 cv=1:rem set citadel visited flag
-9080 ifnot(wr>=5andwr<=24)thengoto9120:rem treat like sanctuary
-9090 wr=wr*2:rem double the warrior count
-9100 printlg$"renewed valor - army doubled!"tc$
-9110 goto9200
-9120 ad=0:nw=0:nf=0:ng=0
-9130 ifwr<5thenlo=5:hi=8:gosub3350:nw=int(r):wr=wr+nw:ad=1
-9140 iffd<6thenlo=9:hi=16:gosub3350:nf=int(r):fd=fd+nf:ad=1
-9150 ifgd<8thenlo=9:hi=16:gosub3350:ng=int(r):gd=gd+ng:ad=1
-9160 ifnw>0thenprint"gained "h1$mid$(str$(nw),2)" "tc$;:wr%=nw:gosub3800:print
-9170 ifnf>0thenprint"gained "h1$mid$(str$(nf),2)tc$" food"
-9180 ifng>0thenprint"gained "h1$mid$(str$(ng),2)tc$" gold"
-9190 ifad=0thenprinth1$"sufficiently provisioned"tc$
-9200 return
-9210 rem === tomb/ruin ===
-9220 gosub3450:vi=te(ck,ci)and128:vt=te(ck,ci)and31
-9230 printvi$;
-9240 iflo$="tomb"thenprint"entering";:nu$="empty":tr=30:gl%=13:gh%=20:br=62.5
-9250 iflo$="ruin"thenprint"exploring";:nu$="nothing":tr=25:gl%=13:gh%=20:br=62.5
-9260 print" the "lo$"..."tc$
-9270 gosub2900:rem creak open sound
-9280 cv=0:rem clear citadel visited flag
-9290 gosub3380:rem percentile roll for brigands or treasure
-9300 ifr<=trthengosub4400:goto9330:rem treasure
-9310 ifr<=brthengosub6360:return:rem brigands
-9320 gosub3020:printgy$nu$tc$
-9330 return
-9340 rem === frontier ===
-9350 printgy$"frontier: "tc$;
-9360 ifck=hkthengoto9420
-9370 nk=0:rem unset needs key flag
-9380 ifck=1andky(1)=0thennk=1:ki%=0:gosub3750:rem set needs key flag (brass)
-9390 ifck=2andky(2)=0thennk=1:ki%=1:gosub3750:rem set needs key flag (silver)
-9400 ifck=3andky(3)=0thennk=1:ki%=2:gosub3750:rem set needs key flag (gold)
-9410 ifnk=1thengoto9480
-9420 px=1:ck=ck+1:ifck>3thenck=0
-9430 ox=px:oy=py
-9440 printtc$"entering "kn$(ck)"..."
-9450 bc%=13:gosub190
-9460 gosub2230
-9470 goto6180
-9480 ki%=ck-1:gosub3750:printrl$"missing "kt$tc$"!"
-9490 gosub1300:rem denied sound
-9500 return
-9510 rem === the fortress! ===
-9520 gosub3720:iftk=3thengoto9580
-9530 gosub1300:rem denied sound
-9540 a=3-tk
-9550 printh1$mid$(str$(a),2)tc$" key";:ifa<>1thenprint"s";
-9560 print" still needed to unlock the"
-9570 goto9600
-9580 ifck=hkthengoto9650
-9590 printtc$"return to "h1$kn$(hk)tc$" to storm the"
-9600 printh1$tt$"!!!"tc$
-9610 cv=0:rem clear citadel visited flag
-9620 na%=-1
-9630 return
-9640 rem === display foreboding banner ===
-9650 printcs$rd$rn$sp$rf$;
-9660 printgy$tt$
-9670 printrd$rn$sp$rf$;
-9680 printtc$
-9690 print:printvi$"riddle of the keys!"tc$:print
-9700 gosub670:rem battle music
-9710 print"enter order ("br$"b"tc$"/"gl$"s"tc$"/"yw$"g"tc$")...":print
-9720 fs$(0)="":forri=1to3:printtc$"key #"h3$mid$(str$(ri),2)": "tc$;
-9730 aa$="":forrj=1to3:fs$(1)=mid$(ko$,rj,1):fi%(0)=len(fs$(0)):fi%(1)=0
-9740 forrk=1tofi%(0)
-9750 ifmid$(fs$(0),rk,1)=fs$(1)thenfi%(1)=1:rk=fi%(0)
-9760 nextrk
-9770 iffi%(1)=0thenaa$=aa$+fs$(1)
-9780 nextrj
-9790 ifri<3thengosub3600
-9800 ifri=3thena$=aa$:gosub3570
-9810 fs$(0)=fs$(0)+a$
-9820 nextri
-9830 iffs$(0)=ko$thengoto9890
-9840 rem === wrong answer ===
-9850 print:printrd$"wrong!"tc$" army forced back";
-9860 gosub1300:rem denied
-9870 return
-9880 rem === unlocked the gate ===
-9890 print:printlg$"unlocked!!!"tc$
-9900 print:printh1$mid$(str$(ew),2)tc$" brigands defend "tt$
-9910 printh1$mid$(str$(wr),2)tc$" ";:wr%=wr:gosub3800
-9920 print" poised for battle"
-9930 print:print"attack? "rn$h1$"y"rf$tc$"es or "rn$h1$"n"rf$tc$"o ";
-9940 aa$="yn":gosub3600
-9950 ifa$="n"thengosub10020:return:rem flee
-9960 printcs$"the final battle!":print
-9970 fb=1:rem set final battle flag to true
-9980 fw=wr:pw=wr:bw=ew:gosub6410:rem battle
-9990 ifwr>0andbw<1thenvc%=1:gm%=3:gosub10120:rem victory
-10000 return
-10010 rem === flee attempt ===
-10020 print:print"fleeing... ";:dl=1:gosub150
-10030 gosub3380:rem dice percentage
-10040 ifr<=50thengoto10090
-10050 printlg$"escaped"tc$
-10060 gosub10520:rem re-randomize key code
-10070 print"the gate magically re-locks";
-10080 goto10100
-10090 printrd$"caught!"tc$:dl=1:gosub150:goto9960
-10100 return
-10110 rem === victory screen ===
-10120 printcs$yw$;
-10130 printrn$sp$rf$;
-10140 printrn$"            *** victory! ***            "rf$;
-10150 printrn$"                                        "rf$;
-10160 printrn$" thou hast taken over the fortress...   "rf$;
-10170 printrn$"                                        "rf$;
-10180 printrn$" and now the scepter is finally thine!  "rf$;
-10190 printrn$sp$rf$
-10200 gosub440:rem victory music
-10210 gosub3410:rem hit return to continue
-10220 return
-10230 rem === leave game ===
-10240 print"exit the game now? "h1$rn$"y"rf$tc$"es or "h1$rn$"n"rf$tc$"o ";
-10250 aa$="yn":gosub3600
-10260 ifa$="y"thengm%=3:gosub10290
-10270 return
-10280 rem === game over ===
-10290 printcs$;
-10300 printcy$"game over"tc$;
-10310 ifvc%=1thengoto10340
-10320 gosub3240:rem game over sound
-10330 print": "rl$"thou hast lost"tc$;:goto10350
-10340 print": "lg$"thou hast won!"tc$;
-10350 print
-10360 gosub220:rem silence all sounds
-10370 print:printtc$"turns:"h3$mid$(str$(tu%),2)" ";
-10380 printtc$"score:";:gosub3940:printtc$
-10390 print:print"play again? "h1$rn$"y"rf$tc$"es or "h1$rn$"n"rf$tc$"o ";
-10400 aa$="yn":gosub3600
-10410 gm%=2:ifa$="y"thengm%=1:return
-10420 printcs$;tc$"thanks for playing "yw$tt$tc$"!"
-10430 print:print"fare thee well..."
-10440 return
-10450 rem === derive seed for prng ===
-10460 r=ti+peek(54299)+peek(53266)+peek(56320)+peek(197)
-10470 r=r*5+123
-10480 ifr=0thenr=1
-10490 r = rnd(-abs(r))
-10500 return
-10510 rem === randomize key code order ===
-10520 lo=1:hi=6:gosub3350
-10530 ko$=mid$(ky$,(int(r)-1)*3+1,3)
-10540 return
-10550 rem === boot strap ===
-10560 poke53280,11:poke53281,0:poke646,12
-10570 poke657,128:rem disable case toggle
-10580 dimmp$(3),kn$(3),fc$(1),df$(3)
-10590 dimte(3,19),kc(3),kt(3),ki(3),kk(17),ky(3)
-10600 dimbz(4),tb(4),ru(4),dd(2),bu(2),bl%(5),fi%(1)
-10610 kn$(0)="arisilon":kn$(1)="brynthia":kn$(2)="durnin":kn$(3)="zenon"
-10620 df$(0)="standard":df$(1)="harder":df$(2)="random":df$(3)="trainer"
-10630 kc(0)=150:kc(1)=159:kc(2)=158:kc(3)=30
-10640 kt(0)=158:kt(1)=158:kt(2)=154:kt(3)=5
-10650 ky$="bsgbgssbgsgbgbsgsb":rem the six different key sequence combinations
-10660 ew$="5161234123412341234516":rem the event wheel
-10670 wh$=chr$(5):yw$=chr$(158):cy$=chr$(159):rd$=chr$(28):rl$=chr$(150)
-10680 og$=chr$(129):vi$=chr$(156):gd$=chr$(151):gl$=chr$(155):gy$=chr$(152)
-10690 dg$=chr$(30):lg$=chr$(153):br$=chr$(149):bd$=chr$(31):bl$=chr$(154)
-10700 pw$=chr$(120):dr$=chr$(92):uk$=chr$(166):te$=chr$(46)
-10710 rt$=chr$(13):cs$=chr$(147)
-10720 ba$=chr$(95):ua$=chr$(94):gt$=chr$(62)
-10730 rn$=chr$(18):rf$=chr$(146):rem rvs on/off characters
-10740 h1$=yw$:h2$=og$:h3$=wh$:h4$=cy$:tc$=gl$
-10750 sp$="                                        ":rem 40 spaces
-10760 tt$="dark tower":rem game title
-10770 printcs$tc$"initializing..."
-10780 bu(0)=2:bu(1)=4:bu(2)=8:rem initial ordering of swappable buildings
-10790 fori=0to19:read a:fork=0to3:te(k,i)=a:ifk>0andi=0thente(k,i)=0
-10800 nextk:nexti:rem init all kingdoms
-10810 rem === initialize game state ===
-10820 ni=1:gosub220:rem init sound
-10830 ky(0)=1:fori=1to3:ky(i)=0:nexti:rem reset key flags
-10840 fori=0to2:dd(i)=-1:nexti:rem reset dragon data
-10850 su=0:bs=0:hl=0:pg=0:sw=0:wz=0:tu%=0:sc%=0:vc%=0
-10860 hk=0:ck=0:tk=0:px=1:py=1:ox=px:oy=py
-10870 cv=0:dg=0:dw=0:fb=0:gm%=0:ko$=""
-10880 rem === title screen ===
-10890 tl$=tt$:l%=len(tl$):if(l%and1)=0thenl%=l%+1:tl$=tl$+" "
-10900 t%=(len(sp$)-l%)/2
-10910 printcs$;
-10920 printleft$(sp$,t%+(l%-5)/2);:fori=1to5:a=iand1
-10930 ifa=0thenprint" ";
-10940 ifa=1thenprintog$rn$" "rf$;
-10950 nexti:print
-10960 printleft$(sp$,t%+(l%-5)/2)og$rn$left$(sp$,5)rf$
-10970 fori=1to2:printleft$(sp$,t%+(l%-3)/2)og$rn$left$(sp$,3)rf$:nexti
-10980 printleft$(sp$,t%)yw$rn$tl$rf$
-10990 print:printtc$
-11000 printtab(5)"the scepter has been stolen by"
-11010 printtab(5)"the evil tyrant king!"
-11020 print:printtab(5)"find the three magic keys and"
-11030 printtab(5)"storm the dread "h1$tt$tc$"!"
-11040 gosub440:rem intro music
-11050 print:printtab(14)h4$"play level:":print
-11060 aa$="":c$="":fori=0to3:a$=left$(df$(i),1):aa$=aa$+a$
-11070 c$=rn$+h1$+a$+rf$+tc$+right$(df$(i),len(df$(i))-1)
-11080 printtab(15)c$:nexti
-11090 print:printtab(14)h4$"choose: "tc$;
-11100 gosub3600
-11110 fori=1tolen(aa$):ifmid$(aa$,i,1)=a$thendf=i-1
-11120 nexti
-11130 print:print:printgy$"preparing new game...";
-11140 gosub10520:rem randomize gate lock's key code
-11150 rem === game level settings ===
-11160 wr=10:fd=25:gd=30:rem common game settings
-11170 ifdf=0thenlo=17:hi=32:gosub3350:ew=int(r)
-11180 ifdf=1thenlo=33:hi=64:gosub3350:ew=int(r)
-11190 ifdf=2thenlo=17:hi=64:gosub3350:ew=int(r)
-11200 ifdf=3thenko$="gsb":ew=16:py=4:oy=py:su=1:bs=1:hl=1:sw=1:pg=1:wz=1
-11210 ifdf=3thenfori=1to3:ky(i)=1:nexti:rem grant all keys
-11220 rem === shuffle certain buildings within each kingdom ===
-11230 fork=0to3:fori=0to2
-11240 lo=0:hi=2:gosub3350:r=int(r)
-11250 t=bu(i):bu(i)=bu(r):bu(r)=t:nexti:rem shuffle
-11260 l=0:fori=0to19:a=te(k,i):if(aand14)>0thente(k,i)=bu(l):l=l+1
-11270 nexti:nextk
-11280 rem === place keys ===
-11290 fork=1to3
-11300 j=0:fori=0to19:if0=(te(k,i)and7)thenkk(j)=i:j=j+1
-11310 nexti:rem isolate tomb,ruins,terrain from location types
-11320 lo=0:hi=17:fori=lotohi:gosub3350:r=int(r)
-11330 t=kk(i):kk(i)=kk(r):kk(r)=t:nexti
-11340 ki(k)=kk(0):rem select the top element
-11350 nextk
-11360 rem === clear maps ===
-11370 fork=0to3:fori=0to19
-11380 te(k,i)=te(k,i)and127:rem clear visited bit
-11390 nexti:nextk
-11400 rem === main game loop ===
-11410 ifgm%=3thengosub10290
-11420 ifgm%>0thenongm%goto10820,11480
-11430 gosub4860:rem main screen
-11440 gosub5590:rem action prompt
-11450 pokes+4,0:dl=.01:gosub150:rem release gate v1
-11460 goto11410
-11470 rem === end ===
-11480 end
-11490 rem === data ===
-11500 data1,0,0,2,0,0,0,8,0,0,4,0,0,16,0,0,0,0,0,0
+6270 ifsw=0thengoto6300
+6280 printrd$"dragon ";:gosub1880
+6290 gosub7060:return:rem dragon vanquished
+6300 printrd$"dragon"tc$" forbids entry!"tc$
+6310 gosub5900:rem move army back to previous location
+6320 na%=-1:rem no action accepted
+6330 return
+6340 rem === safe ===
+6350 printlg$"safe."tc$;
+6360 return
+6370 rem === brigands ===
+6380 printcs$rd$"brigands!"tc$:print
+6390 a=int(wr/2):ifa<1thena=1
+6400 lo=wr:hi=lo+a:gosub3350:bw=int(r)
+6410 pw=wr
+6420 rem === combat ===
+6430 b0$=mid$(str$(bw),2):w0$=mid$(str$(pw),2)
+6440 gosub1450:rem battle charge sound
+6450 rem === battle! ===
+6460 gosub3380:rem percentile roll
+6470 co%=2+(r>(pw/(pw+bw))*100)
+6480 onco%goto6490,6530
+6490 bc%=10:gosub190
+6500 pw=pw-1:rem lose a warrior
+6510 sc%=sc%-1:rem adjust score
+6520 goto6560
+6530 bc%=14:gosub190
+6540 bk=int(bw/2):bw=bw-bk+(bk<1):rem reduce enemy army by 1/2
+6550 sc%=sc%+bk:rem adjust score
+6560 printrl$"enemy:"h3$mid$(str$(bw),2)tc$"/"b0$;
+6570 printbl$" you:"h3$mid$(str$(pw),2)tc$"/"w0$" ";
+6580 onco%gosub1650,1560:rem player or enemy loss sound
+6590 ifpw<=0orbw<=0thengoto6800
+6600 printtc$rn$h1$"f"rf$tc$"ight";
+6610 ifpw<2thenprinth3$"!!! "tc$;
+6620 ifpw>1thenprint" "rn$h1$"r"rf$tc$"etreat ";
+6630 aa$="f":ifpw>1thenaa$=aa$+"r"
+6640 gosub3600
+6650 ifa$="r"thengoto6680
+6660 goto6460:rem loop
+6670 rem === retreat from combat ===
+6680 print:printyw$"retreat! "tc$:print
+6690 fl=1:wr=pw-fl:rem suffer one casualty
+6700 gosub4340:rem adjust gold carried
+6710 printh1$mid$(str$(fl),2)tc$" ";:wr%=fl:gosub3800
+6720 print" perished in the fallback to"
+6730 print"the previous location"
+6740 gosub840:rem retreat music
+6750 gosub4240
+6760 ifwr>0thengosub5900:rem move army back to previous location
+6770 iffb=1thenfb=0:gosub10600:rem re-randomize key code
+6780 goto6920
+6790 rem === combat over ===
+6800 lw=wr-pw:wr=pw:gosub4340:rem adjust gold carried
+6810 print:print
+6820 ifwr>0thenprintlg$"victory!"tc$:gosub1740
+6830 iflw<1thengoto6870
+6840 print:printh1$mid$(str$(lw),2)tc$" ";:wr%=lw:gosub3800
+6850 print" perished in the battle"
+6860 gosub4240:ifwr=0thengoto6920
+6870 iffb=1thengoto6910
+6880 gosub3380:rem percentile roll
+6890 tr=50:gl%=5:gh%=20:gosub4380:rem treasure check
+6900 goto6920
+6910 gosub3410:rem hit return to continue
+6920 return
+6930 rem === dragon ===
+6940 iflo$="terrain"andpx<5andpy<4thengoto6960
+6950 gosub6350:return:rem dragon should not appear in this territory
+6960 printrd$"dragon ";
+6970 gosub1880:rem dragon encounter sound
+6980 ifsw=1thengosub7060:return
+6990 dd(0)=ck:dd(1)=px:dd(2)=py:rem place dragon at current location
+7000 ifgd=0orwr<2thenprint"blockades!"tc$:goto7030
+7010 print"ambushes!"tc$:gosub4650:rem robbed
+7020 dg=dg+sg:dw=dw+sl:rem update dragon's stolen hoard
+7030 print"army falls back to previous location"
+7040 gosub5900:rem move army back to previous location
+7050 return
+7060 printlg$"vanquished!"tc$
+7070 gosub2010:rem vanquished sound
+7080 dd(0)=-1:dd(1)=-1:dd(2)=-1:rem reset dragon's position
+7090 sw=0:rem relinquish the sword
+7100 ifdg+dw=0thengoto7170
+7110 print"recovered ";
+7120 ifdg>0thengd=gd+dg:printh1$mid$(str$(dg),2)tc$" gold ";
+7130 ifdg>0anddw>0thenprint"and ";
+7140 ifdw>0thenwr=wr+dw:printh1$mid$(str$(dw),2)tc$" ";
+7150 ifdw>0thenwr%=dw:gosub3800:print
+7160 dg=0:dw=0:rem clear out dragon's stolen hoard
+7170 return
+7180 rem === plague ===
+7190 printvi$"plague!"tc$
+7200 ifhl=1thengosub7280:return
+7210 gosub840:rem plague sound
+7220 ls=2:ifls>wrthenls=wr
+7230 wr=wr-ls:gosub4340:rem adjust gold carried
+7240 printh1$mid$(str$(ls),2)tc$" ";:wr%=ls:gosub3800:print" perished"
+7250 gosub4240
+7260 return
+7270 rem === healer rescues ===
+7280 printdg$"healer! "tc$;
+7290 nw=2:wr=wr+nw
+7300 printh1$mid$(str$(nw),2)tc$" new ";:wr%=nw:gosub3800
+7310 print" join the ranks"
+7320 return
+7330 rem === lost ===
+7340 printvi$"lost! "tc$;:print
+7350 ifsu=1thengosub7430:return
+7360 gosub1300:rem sound denied
+7370 fc=2:iffc>fdthenfc=fd
+7380 iffc>0thenprinth1$mid$(str$(fc),2)tc$" food consumed while going nowhere!"
+7390 fd=fd-fc
+7400 gosub5900:rem move army back to previous location
+7410 return
+7420 rem === scout helps ===
+7430 printdg$"scout! "tc$;
+7440 nf=2:fd=fd+nf
+7450 printh1$mid$(str$(nf),2)tc$" food scavenged"
+7460 return
+7470 rem === wizard's curse ===
+7480 ifgd=0orwr<2thengosub6350:return
+7490 printvi$"cursed!"tc$
+7500 ifwz=1thengosub7540:return
+7510 gosub1300:rem denied sound
+7520 gosub4650:rem robbed
+7530 return
+7540 gosub2010:rem vanquished sound
+7550 print"thy wizard disrupts the curse!"
+7560 return
+7570 rem === key found ===
+7580 ifky(1)=0theni=1:c$=og$+"brass":goto7610
+7590 ifky(2)=0theni=2:c$=cy$+"silver":goto7610
+7600 ifky(3)=0theni=3:c$=yw$+"gold"
+7610 ky(i)=1:rem set key obtained flag
+7620 ki(ck)=-1:rem remove key from key locations list
+7630 sc%=sc%+100:rem adjust score
+7640 print:printtc$"*** "c$tc$" key found! ***"
+7650 gosub1180:rem item found sound
+7660 return
+7670 rem === dragonsword found ===
+7680 sw=1:c$=og$+"sword"
+7690 print:printtc$"*** "c$tc$" found! ***"
+7700 gosub1180:rem item found sound
+7710 return
+7720 rem === pegasus found ===
+7730 pg=1:c$=wh$+"pegasus"
+7740 print:printtc$"*** "c$tc$" found! ***"
+7750 gosub2740:rem pegasus found sound
+7760 return
+7770 rem === wizard found ===
+7780 wz=1:c$=gy$+"wizard"
+7790 print:printtc$"*** "c$tc$" found! ***"
+7800 gosub1180:rem item found sound
+7810 return
+7820 rem === use pegasus ===
+7830 gosub2740
+7840 aa$="":c$="":fori=0to3:ifi>0thenc$=c$+" "
+7850 a=(i=0):ifi>0thena=aor(ky(i-1)<>0)
+7860 ifathena$=left$(kn$(i),1):aa$=aa$+a$
+7870 ifathenc$=c$+rn$+h1$+a$+rf$+tc$+right$(kn$(i),len(kn$(i))-1)
+7880 nexti:rem determine which kingdoms allowed for passage
+7890 printc$
+7900 printh3$"fly to which kingdom?"tc$" ("rn$h1$ba$rf$tc$" to exit) ";
+7910 aa$=ba$+aa$:gosub3600
+7920 ifa$=ba$thenna%=-1:return
+7930 fori=2tolen(aa$):ifmid$(aa$,i,1)=a$thena=i-2
+7940 nexti
+7950 bl%(0)=0:bl%(1)=3:bl%(2)=7:bl%(3)=10:bl%(4)=13:rem indices of buildings
+7960 bl%(5)=17:aa$="":c$=""
+7970 fori=0to5:ifi>0thenc$=c$+" "
+7980 vt=te(a,bl%(i))and31
+7990 ifvt=0andi<>5thena$="entry"
+8000 ifvt=1thena$="citadel"
+8010 ifvt=2thena$="sanctuary"
+8020 ifvt=4thena$="bazaar"
+8030 ifvt=8thena$="tomb"
+8040 ifvt=16thena$="ruin"
+8050 ifi=5thena$="gate"
+8060 b$=left$(a$,1):aa$=aa$+b$:c$=c$+rn$+h1$+b$+rf$+tc$+right$(a$,len(a$)-1)
+8070 nexti:rem determine the locations within the selected kingdom
+8080 print:printc$
+8090 printh3$"and to which location?"tc$" ("rn$h1$ba$rf$tc$" to exit) ";
+8100 aa$=ba$+aa$:gosub3600
+8110 ifa$=ba$thenna%=-1:return
+8120 fori=2tolen(aa$):ifmid$(aa$,i,1)=a$thenb=bl%(i-2)
+8130 nexti
+8140 py=int(b/5):px=b-5*py:px=px+1:py=py+1:rem set location
+8150 pg=0:rem reset pegasus found flag
+8160 ifa<>ckthenck=a:gosub9510:rem fly to kingdom/location
+8170 return
+8180 rem === use wizard ===
+8190 printtc$"the wizard incants and then vanishes!"
+8200 gosub4760
+8210 wz=0:rem relinquish the wizard
+8220 return
+8230 rem === bazaar ===
+8240 ifbz(ck)=1thengoto8750
+8250 bz(4)=0:rem bazaar entry flag
+8260 cv=0:rem clear citadel visited flag
+8270 hg%=75:rem initial haggle percentage
+8280 hc%=0:rem haggle count
+8290 fc=1:rem food cost
+8300 lo=5:hi=8:gosub3350:wc=int(r):rem warrior cost
+8310 lo=17:hi=9:gosub3350:bc=int(r):rem beast cost
+8320 lo=17:hi=9:gosub3350:sc=int(r):rem scout cost
+8330 lo=17:hi=9:gosub3350:hc=int(r):rem healer cost
+8340 printcs$og$"bazaar"tc$;
+8350 print"   gold:"yw$mid$(str$(gd),2)tc$;
+8360 print" army:"rl$mid$(str$(wr),2)tc$;
+8370 print" food:"lg$mid$(str$(fd),2)tc$:print
+8380 ifbz(4)=0thengosub1020:bz(4)=1:rem bazaar music
+8390 ic%=0:aa$="wf"
+8400 mw=int(gd/wc):mf=int(gd/fc)
+8410 ifmw>0thenc$=rn$+h1$+"w"+rf$+tc$+"arrior  "+h3$
+8420 ifmw<1thenc$=gd$+"warrior  "
+8430 c$=c$+left$(mid$(str$(wc),2),2)
+8440 ifmw>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mw),2)+tc$+")"
+8450 ifmw<1thenc$=c$+"g"
+8460 ic%=ic%or1:printc$
+8470 ifmf>0thenc$=rn$+h1$+"f"+rf$+tc$+"ood     "+h3$
+8480 ifmf<1thenc$=gd$+"food     "
+8490 c$=c$+left$(mid$(str$(fc),2),2)
+8500 ifmf>0thenc$=c$+tc$+"g (max "+cy$+mid$(str$(mf),2)+tc$+")"
+8510 ifmf<1thenc$=c$+"g"
+8520 ic%=ic%or2:printc$
+8530 c$=rn$+h1$+"b"+rf$+tc$+"east    "
+8540 c$=c$+h3$+mid$(str$(bc),2)+tc$+"g"
+8550 ifbs=0andgd>=bcthenic%=ic%or4:printc$:aa$=aa$+"b"
+8560 c$=rn$+h1$+"s"+rf$+tc$+"cout    "
+8570 c$=c$+h3$+mid$(str$(sc),2)+tc$+"g"
+8580 ifsu=0andgd>=scthenic%=ic%or8:printc$:aa$=aa$+"s"
+8590 c$=rn$+h1$+"h"+tc$+rf$+"ealer   "
+8600 c$=c$+h3$+mid$(str$(hc),2)+tc$+"g"
+8610 ifhl=0andgd>=hcthenic%=ic%or16:printc$:aa$=aa$+"h"
+8620 print
+8630 ific%>0thenprint"h"rn$h1$"a"rf$tc$"ggle ";:aa$=aa$+"a"
+8640 print"e"h1$rn$"x"rf$tc$"it":aa$=aa$+"x"
+8650 print:c$="":printh4$"choose: "tc$;
+8660 gosub3600
+8670 ifa$="w"andic%and1=1thengosub8790:ifq>mwthengoto8950
+8680 ifa$="f"andic%and2=2thengosub8850:ifq>mfthengoto8950
+8690 ifa$="b"andic%and4=4andbs=0andgd>=bcthengd=gd-bc:bs=1
+8700 ifa$="s"andic%and8=8andsu=0andgd>=scthengd=gd-sc:su=1
+8710 ifa$="h"andic%and16=16andhl=0andgd>=hcthengd=gd-hc:hl=1
+8720 ifa$="a"andic%>0thengosub8910:ifbz(ck)=1thenreturn
+8730 ifa$="x"thenreturn
+8740 goto8340
+8750 printrd$"the bazaar is closed"tc$;
+8760 na%=-1
+8770 return
+8780 rem === buy warriors ===
+8790 print"qty (1";:ifmw>1thenprint" - "mid$(str$(mw),2);
+8800 print")";
+8810 q=0:q$="":inputq$:ifq$<>""thenq=val(q$)
+8820 ifq<1orq>mwthenreturn
+8830 gd=gd-q*wc:wr=wr+q:return
+8840 rem === buy food ===
+8850 print"qty (1";:ifmf>1thenprint" - "mid$(str$(mf),2);
+8860 print")";
+8870 q=0:q$="":inputq$:ifq$<>""thenq=val(q$)
+8880 ifq<1orq>mfthenreturn
+8890 gd=gd-q*fc:fd=fd+q:return
+8900 rem === haggle ===
+8910 hc%=hc%+1
+8920 print:print"haggling... ";:dl=1:gosub150
+8930 gosub3380:ifr<=hg%thengoto9000:rem haggle check
+8940 gosub3380:ifr>(40+hc%*10)thengoto9060:rem no deal check
+8950 bz(ck)=1:printrd$"closed!"tc$
+8960 print:printgy$"thou hast annoyed the merchant"
+8970 print"with thy stinginess"tc$;
+8980 gosub1300:rem denied
+8990 goto9070
+9000 lz=0
+9010 ifwc>=2thenwc=wc-1:lz=lz+1
+9020 ifbc>=2thenbc=bc-1:lz=lz+1
+9030 ifsc>=2thensc=sc-1:lz=lz+1
+9040 ifhc>=2thenhc=hc-1:lz=lz+1
+9050 iflz>0thenprintlg$"prices lowered!"tc$:hg%=50:dl=1:gosub150:goto9070
+9060 printtc$"no deal.":dl=1:gosub150
+9070 return
+9080 rem === sanctuary/citadel ===
+9090 printcy$lo$tc$": ";
+9100 gosub2380:rem sanctuary sound
+9110 if(lo$="citadel")and(cv<>0)thengoto9200
+9120 iflo$<>"citadel"thencv=0:goto9200:rem clear citadel visited flag
+9130 gosub3720:iftk=3thengoto9150
+9140 print:printh1$"return here with all of the keys":goto9280
+9150 cv=1:rem set citadel visited flag
+9160 ifnot(wr>=5andwr<=24)thengoto9200:rem treat like sanctuary
+9170 wr=wr*2:rem double the warrior count
+9180 printlg$"renewed valor - army doubled!"tc$
+9190 goto9280
+9200 ad=0:nw=0:nf=0:ng=0
+9210 ifwr<5thenlo=5:hi=8:gosub3350:nw=int(r):wr=wr+nw:ad=1
+9220 iffd<6thenlo=9:hi=16:gosub3350:nf=int(r):fd=fd+nf:ad=1
+9230 ifgd<8thenlo=9:hi=16:gosub3350:ng=int(r):gd=gd+ng:ad=1
+9240 ifnw>0thenprint"gained "h1$mid$(str$(nw),2)" "tc$;:wr%=nw:gosub3800:print
+9250 ifnf>0thenprint"gained "h1$mid$(str$(nf),2)tc$" food"
+9260 ifng>0thenprint"gained "h1$mid$(str$(ng),2)tc$" gold"
+9270 ifad=0thenprinth1$"sufficiently provisioned"tc$
+9280 return
+9290 rem === tomb/ruin ===
+9300 gosub3450:vi=te(ck,ci)and128:vt=te(ck,ci)and31
+9310 printvi$;
+9320 iflo$="tomb"thenprint"entering";:nu$="empty":tr=30:gl%=13:gh%=20:br=62.5
+9330 iflo$="ruin"thenprint"exploring";:nu$="nothing":tr=25:gl%=13:gh%=20:br=62.5
+9340 print" the "lo$"..."tc$
+9350 gosub2900:rem creak open sound
+9360 cv=0:rem clear citadel visited flag
+9370 gosub3380:rem percentile roll for brigands or treasure
+9380 ifr<=trthengosub4400:goto9410:rem treasure
+9390 ifr<=brthengosub6380:return:rem brigands
+9400 gosub3020:printgy$nu$tc$
+9410 return
+9420 rem === frontier ===
+9430 printgy$"frontier: "tc$;
+9440 ifck=hkthengoto9500
+9450 nk=0:rem unset needs key flag
+9460 ifck=1andky(1)=0thennk=1:ki%=0:gosub3750:rem set needs key flag (brass)
+9470 ifck=2andky(2)=0thennk=1:ki%=1:gosub3750:rem set needs key flag (silver)
+9480 ifck=3andky(3)=0thennk=1:ki%=2:gosub3750:rem set needs key flag (gold)
+9490 ifnk=1thengoto9560
+9500 px=1:ck=ck+1:ifck>3thenck=0
+9510 ox=px:oy=py
+9520 printtc$"entering "kn$(ck)"..."
+9530 bc%=13:gosub190
+9540 gosub2230
+9550 goto6180
+9560 ki%=ck-1:gosub3750:printrl$"missing "kt$tc$"!"
+9570 gosub1300:rem denied sound
+9580 return
+9590 rem === the fortress! ===
+9600 gosub3720:iftk=3thengoto9660
+9610 gosub1300:rem denied sound
+9620 a=3-tk
+9630 printh1$mid$(str$(a),2)tc$" key";:ifa<>1thenprint"s";
+9640 print" still needed to unlock the"
+9650 goto9680
+9660 ifck=hkthengoto9730
+9670 printtc$"return to "h1$kn$(hk)tc$" to storm the"
+9680 printh1$tt$"!!!"tc$
+9690 cv=0:rem clear citadel visited flag
+9700 na%=-1
+9710 return
+9720 rem === display foreboding banner ===
+9730 printcs$rd$rn$sp$rf$;
+9740 printgy$tt$
+9750 printrd$rn$sp$rf$;
+9760 printtc$
+9770 print:printvi$"riddle of the keys!"tc$:print
+9780 gosub670:rem battle music
+9790 print"enter order ("br$"b"tc$"/"gl$"s"tc$"/"yw$"g"tc$")...":print
+9800 fs$(0)="":forri=1to3:printtc$"key #"h3$mid$(str$(ri),2)": "tc$;
+9810 aa$="":forrj=1to3:fs$(1)=mid$(ko$,rj,1):fi%(0)=len(fs$(0)):fi%(1)=0
+9820 forrk=1tofi%(0)
+9830 ifmid$(fs$(0),rk,1)=fs$(1)thenfi%(1)=1:rk=fi%(0)
+9840 nextrk
+9850 iffi%(1)=0thenaa$=aa$+fs$(1)
+9860 nextrj
+9870 ifri<3thengosub3600
+9880 ifri=3thena$=aa$:gosub3570
+9890 fs$(0)=fs$(0)+a$
+9900 nextri
+9910 iffs$(0)=ko$thengoto9970
+9920 rem === wrong answer ===
+9930 print:printrd$"wrong!"tc$" army forced back";
+9940 gosub1300:rem denied
+9950 return
+9960 rem === unlocked the gate ===
+9970 print:printlg$"unlocked!!!"tc$
+9980 print:printh1$mid$(str$(ew),2)tc$" brigands defend "tt$
+9990 printh1$mid$(str$(wr),2)tc$" ";:wr%=wr:gosub3800
+10000 print" poised for battle"
+10010 print:print"attack? "rn$h1$"y"rf$tc$"es or "rn$h1$"n"rf$tc$"o ";
+10020 aa$="yn":gosub3600
+10030 ifa$="n"thengosub10100:return:rem flee
+10040 printcs$"the final battle!":print
+10050 fb=1:rem set final battle flag to true
+10060 fw=wr:pw=wr:bw=ew:gosub6430:rem battle
+10070 ifwr>0andbw<1thenvc%=1:gm%=3:gosub10200:rem victory
+10080 return
+10090 rem === flee attempt ===
+10100 print:print"fleeing... ";:dl=1:gosub150
+10110 gosub3380:rem dice percentage
+10120 ifr<=50thengoto10170
+10130 printlg$"escaped"tc$
+10140 gosub10600:rem re-randomize key code
+10150 print"the gate magically re-locks";
+10160 goto10180
+10170 printrd$"caught!"tc$:dl=1:gosub150:goto10040
+10180 return
+10190 rem === victory screen ===
+10200 printcs$yw$;
+10210 printrn$sp$rf$;
+10220 printrn$"            *** victory! ***            "rf$;
+10230 printrn$"                                        "rf$;
+10240 printrn$" thou hast taken over the fortress...   "rf$;
+10250 printrn$"                                        "rf$;
+10260 printrn$" and now the scepter is finally thine!  "rf$;
+10270 printrn$sp$rf$
+10280 gosub440:rem victory music
+10290 gosub3410:rem hit return to continue
+10300 return
+10310 rem === leave game ===
+10320 print"exit the game now? "h1$rn$"y"rf$tc$"es or "h1$rn$"n"rf$tc$"o ";
+10330 aa$="yn":gosub3600
+10340 ifa$="y"thengm%=3:gosub10370
+10350 return
+10360 rem === game over ===
+10370 printcs$;
+10380 printcy$"game over"tc$;
+10390 ifvc%=1thengoto10420
+10400 gosub3240:rem game over sound
+10410 print": "rl$"thou hast lost"tc$;:goto10430
+10420 print": "lg$"thou hast won!"tc$;
+10430 print
+10440 gosub220:rem silence all sounds
+10450 print:printtc$"turns:"h3$mid$(str$(tu%),2)" ";
+10460 printtc$"score:";:gosub3940:printtc$
+10470 print:print"play again? "h1$rn$"y"rf$tc$"es or "h1$rn$"n"rf$tc$"o ";
+10480 aa$="yn":gosub3600
+10490 gm%=2:ifa$="y"thengm%=1:return
+10500 printcs$;tc$"thanks for playing "yw$tt$tc$"!"
+10510 print:print"fare thee well..."
+10520 return
+10530 rem === derive seed for prng ===
+10540 r=ti+peek(54299)+peek(53266)+peek(56320)+peek(197)
+10550 r=r*5+123
+10560 ifr=0thenr=1
+10570 r = rnd(-abs(r))
+10580 return
+10590 rem === randomize key code order ===
+10600 lo=1:hi=6:gosub3350
+10610 ko$=mid$(ky$,(int(r)-1)*3+1,3)
+10620 return
+10630 rem === boot strap ===
+10640 poke53280,11:poke53281,0:poke646,12
+10650 poke657,128:rem disable case toggle
+10660 dimmp$(3),kn$(3),fc$(1),df$(3)
+10670 dimte(3,19),kc(3),kt(3),ki(3),kk(17),ky(3)
+10680 dimbz(4),tb(4),ru(4),dd(2),bu(2),bl%(5),fi%(1)
+10690 kn$(0)="arisilon":kn$(1)="brynthia":kn$(2)="durnin":kn$(3)="zenon"
+10700 df$(0)="standard":df$(1)="harder":df$(2)="random":df$(3)="trainer"
+10710 kc(0)=150:kc(1)=159:kc(2)=158:kc(3)=30
+10720 kt(0)=158:kt(1)=158:kt(2)=154:kt(3)=5
+10730 ky$="bsgbgssbgsgbgbsgsb":rem the six different key sequence combinations
+10740 ew$="5161234123412341234516":rem the event wheel
+10750 wh$=chr$(5):yw$=chr$(158):cy$=chr$(159):rd$=chr$(28):rl$=chr$(150)
+10760 og$=chr$(129):vi$=chr$(156):gd$=chr$(151):gl$=chr$(155):gy$=chr$(152)
+10770 dg$=chr$(30):lg$=chr$(153):br$=chr$(149):bd$=chr$(31):bl$=chr$(154)
+10780 pw$=chr$(120):dr$=chr$(92):uk$=chr$(166):te$=chr$(46)
+10790 rt$=chr$(13):cs$=chr$(147)
+10800 ba$=chr$(95):ua$=chr$(94):gt$=chr$(62)
+10810 rn$=chr$(18):rf$=chr$(146):rem rvs on/off characters
+10820 h1$=yw$:h2$=og$:h3$=wh$:h4$=cy$:tc$=gl$
+10830 sp$="                                        ":rem 40 spaces
+10840 tt$="dark tower":rem game title
+10850 printcs$tc$"initializing..."
+10860 bu(0)=2:bu(1)=4:bu(2)=8:rem initial ordering of swappable buildings
+10870 fori=0to19:read a:fork=0to3:te(k,i)=a:ifk>0andi=0thente(k,i)=0
+10880 nextk:nexti:rem init all kingdoms
+10890 rem === initialize game state ===
+10900 ni=1:gosub220:rem init sound
+10910 ky(0)=1:fori=1to3:ky(i)=0:nexti:rem reset key flags
+10920 fori=0to2:dd(i)=-1:nexti:rem reset dragon data
+10930 su=0:bs=0:hl=0:pg=0:sw=0:wz=0:tu%=0:sc%=0:vc%=0
+10940 hk=0:ck=0:tk=0:px=1:py=1:ox=px:oy=py
+10950 cv=0:dg=0:dw=0:fb=0:gm%=0:ko$=""
+10960 rem === title screen ===
+10970 tl$=tt$:l%=len(tl$):if(l%and1)=0thenl%=l%+1:tl$=tl$+" "
+10980 t%=(len(sp$)-l%)/2
+10990 printcs$;
+11000 printleft$(sp$,t%+(l%-5)/2);:fori=1to5:a=iand1
+11010 ifa=0thenprint" ";
+11020 ifa=1thenprintog$rn$" "rf$;
+11030 nexti:print
+11040 printleft$(sp$,t%+(l%-5)/2)og$rn$left$(sp$,5)rf$
+11050 fori=1to2:printleft$(sp$,t%+(l%-3)/2)og$rn$left$(sp$,3)rf$:nexti
+11060 printleft$(sp$,t%)yw$rn$tl$rf$
+11070 print:printtc$
+11080 printtab(5)"the scepter has been stolen by"
+11090 printtab(5)"the evil tyrant king!"
+11100 print:printtab(5)"find the three magic keys and"
+11110 printtab(5)"storm the dread "h1$tt$tc$"!"
+11120 gosub440:rem intro music
+11130 print:printtab(14)h4$"play level:":print
+11140 aa$="":c$="":fori=0to3:a$=left$(df$(i),1):aa$=aa$+a$
+11150 c$=rn$+h1$+a$+rf$+tc$+right$(df$(i),len(df$(i))-1)
+11160 printtab(15)c$:nexti
+11170 print:printtab(14)h4$"choose: "tc$;
+11180 gosub3600
+11190 fori=1tolen(aa$):ifmid$(aa$,i,1)=a$thendf=i-1
+11200 nexti
+11210 print:print:printgy$"preparing new game...";
+11220 gosub10600:rem randomize gate lock's key code
+11230 rem === game level settings ===
+11240 wr=10:fd=25:gd=30:rem common game settings
+11250 ifdf=0thenlo=17:hi=32:gosub3350:ew=int(r)
+11260 ifdf=1thenlo=33:hi=64:gosub3350:ew=int(r)
+11270 ifdf=2thenlo=17:hi=64:gosub3350:ew=int(r)
+11280 ifdf=3thenko$="gsb":ew=16:py=4:oy=py:su=1:bs=1:hl=1:sw=1:pg=1:wz=1
+11290 ifdf=3thenfori=1to3:ky(i)=1:nexti:rem grant all keys
+11300 rem === shuffle certain buildings within each kingdom ===
+11310 fork=0to3:fori=0to2
+11320 lo=0:hi=2:gosub3350:r=int(r)
+11330 t=bu(i):bu(i)=bu(r):bu(r)=t:nexti:rem shuffle
+11340 l=0:fori=0to19:a=te(k,i):if(aand14)>0thente(k,i)=bu(l):l=l+1
+11350 nexti:nextk
+11360 rem === place keys ===
+11370 fork=1to3
+11380 j=0:fori=0to19:if0=(te(k,i)and7)thenkk(j)=i:j=j+1
+11390 nexti:rem isolate tomb,ruins,terrain from location types
+11400 lo=0:hi=17:fori=lotohi:gosub3350:r=int(r)
+11410 t=kk(i):kk(i)=kk(r):kk(r)=t:nexti
+11420 ki(k)=kk(0):rem select the top element
+11430 nextk
+11440 rem === clear maps ===
+11450 fork=0to3:fori=0to19
+11460 te(k,i)=te(k,i)and127:rem clear visited bit
+11470 nexti:nextk
+11480 rem === main game loop ===
+11490 ifgm%=3thengosub10370
+11500 ifgm%>0thenongm%goto10900,11560
+11510 gosub4860:rem main screen
+11520 gosub5590:rem action prompt
+11530 pokes+4,0:dl=.01:gosub150:rem release gate v1
+11540 goto11490
+11550 rem === end ===
+11560 end
+11570 rem === data ===
+11580 data1,0,0,2,0,0,0,8,0,0,4,0,0,16,0,0,0,0,0,0

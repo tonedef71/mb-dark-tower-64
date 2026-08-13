@@ -605,7 +605,7 @@ mp$(3-y)=mp$(3-y)+lg$+te$+tc$+":terrain   "
 mp$(3-y)=mp$(3-y)+gd$+uk$+tc$+":unknown "+rd$+dr$+tc$+":dragon"
 @l_main_loop_next
 nexty
-dl=1.5:gosub@p_sleep:rem delay needed when blitzed!
+dl=2:gosub@p_sleep:rem delay needed when blitzed!
 printcs$chr$(kc(ck))rn$sp$rf$;
 c1$=rn$+chr$(kt(ck))+kn$(ck)+rf$+tc$+" ["+mid$(str$(px),2)+","
 c1$=c1$+mid$(str$(py),2)+"] "+h4$+lo$+tc$:a=40-len(c1$)
@@ -728,7 +728,10 @@ lo=1:hi=22:gosub@p_random_range:r=val(mid$(ew$,r,1))
 onrgosub@p_safe,@p_lost,@p_plague,@p_brigands_encounter,@p_dragon_encounter,@p_wizard_curse
 return
 @l_move_dragon
-ifsw=1thenprintrd$"dragon ";:gosub@p_dragon_vanq:return:rem dragon vanquished
+ifsw=0thengoto@l_move_dragon_forbids
+printrd$"dragon ";:gosub@p_sound_dragon_attack
+gosub@p_dragon_vanq:return:rem dragon vanquished
+@l_move_dragon_forbids
 printrd$"dragon"tc$" forbids entry!"tc$
 gosub@p_move_back:rem move army back to previous location
 na%=-1:rem no action accepted
@@ -966,6 +969,7 @@ ifbz(ck)=1thengoto@l_bazaar_closed
 bz(4)=0:rem bazaar entry flag
 cv=0:rem clear citadel visited flag
 hg%=75:rem initial haggle percentage
+hc%=0:rem haggle count
 fc=1:rem food cost
 lo=5:hi=8:gosub@p_random_range:wc=int(r):rem warrior cost
 lo=17:hi=9:gosub@p_random_range:bc=int(r):rem beast cost
@@ -1020,18 +1024,23 @@ return
 rem === buy warriors ===
 @p_buy_warriors
 print"qty (1";:ifmw>1thenprint" - "mid$(str$(mw),2);
-print")";:inputq:ifq<1orq>mwthenreturn
+print")";
+q=0:q$="":inputq$:ifq$<>""thenq=val(q$)
+ifq<1orq>mwthenreturn
 gd=gd-q*wc:wr=wr+q:return
 rem === buy food ===
 @p_buy_food
 print"qty (1";:ifmf>1thenprint" - "mid$(str$(mf),2);
-print")";:inputq:ifq<1orq>mfthenreturn
+print")";
+q=0:q$="":inputq$:ifq$<>""thenq=val(q$)
+ifq<1orq>mfthenreturn
 gd=gd-q*fc:fd=fd+q:return
 rem === haggle ===
 @p_haggle
+hc%=hc%+1
 print:print"haggling... ";:dl=1:gosub@p_sleep
-gosub@p_dice_pct
-ifr<=hg%thengoto@l_haggle_haggling
+gosub@p_dice_pct:ifr<=hg%thengoto@l_haggle_haggling:rem haggle check
+gosub@p_dice_pct:ifr>(40+hc%*10)thengoto@l_haggle_no_deal:rem no deal check
 @l_haggle_annoy_merchant
 bz(ck)=1:printrd$"closed!"tc$
 print:printgy$"thou hast annoyed the merchant"
